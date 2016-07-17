@@ -28,54 +28,65 @@ public class PacotesUtil {
             br = new BufferedReader(reader);
             String linha = br.readLine();
 
-            Pacotes pacote = new Pacotes();
-            PacotesCategoria categoria;
-
             // Povoa Pacotes
-            //PacotesBO pacotesBO = PacotesBO.getInstance();
-            //PacotesCategoriaBO pacotesCategoriaBO = PacotesCategoriaBO.getInstance();
-            while (linha != null) {
-                String aux;
+            PacotesBO pacotesBO = new PacotesBO();
+            PacotesCategoriaBO pacotesCategoriaBO = new PacotesCategoriaBO();
 
+            Pacotes pacote = null;
+            Pacotes pct_aux = null;
+            PacotesCategoria categoria = null;
+
+            while (linha != null) {
+                String valor = "";
+                // Lendo o nome do Pacote!
                 if (linha.startsWith("Package: ")) {
-                    aux = linha.substring(9).replace(" ", "");
-                    pacote.setPacote(aux);
+                    // Inicializo o pacote
+                    pacote = new Pacotes();
+                    // Leio o nome do pacote da lista de pacotes e seto o valor
+                    valor = linha.substring(9).replace(" ", "").toLowerCase();
+                    pacote.setPacote(valor);
                     // procura pacote do banco de dados 
-                    Pacotes p_aux = new PacotesBO().selecionar(aux);
-                    if (p_aux != null) {
-                        pacote.setId(p_aux.getId());
+                    pct_aux = pacotesBO.selecionar(valor);
+                    if (pct_aux != null) {
+                        pacote.setId(pct_aux.getId());
                     }
-                } else if (linha.startsWith("Version: ")) {
-                    pacote.setVersao(linha.substring(9).replace(" ", ""));
-                } else if (linha.startsWith("Depends: ")) {
+                }
+                // Lendo a versao do Pacote!
+                if (linha.startsWith("Version: ")) {
+                    pacote.setVersao(linha.substring(9).replace(" ", "").toLowerCase());
+                }
+                // Lendo as dependencias do Pacote!
+                if (linha.startsWith("Depends: ")) {
                     pacote.setDependencias(linha.substring(9));
-                } else if (linha.startsWith("Description: ")) {
-                    pacote.setDescricao(linha.substring(13));
-                } else if (linha.startsWith("Section: ")) {
-                    aux = linha.substring(9).replace(" ", "");
-                    pacote.setAtivo(true);
+                }
+                // Lendo as dependencias do Pacote!
+                if (linha.startsWith("Description: ")) {
+                    pacote.setDescricao(linha.substring(13).toLowerCase());
+                }
+                // Lendo as dependencias do Pacote!
+                if (linha.startsWith("Section: ")) {
+                    valor = linha.substring(9).replace(" ", "").toLowerCase();
                     // Verifica e Adiciona Categoria
-                    PacotesCategoriaBO pacotesCategoriaBO = new PacotesCategoriaBO();
-                    categoria = pacotesCategoriaBO.selecionar(aux);
+                    categoria = pacotesCategoriaBO.selecionar(valor);
                     if (categoria == null) {
-                        categoria = new PacotesCategoria(aux);
+                        categoria = new PacotesCategoria(valor);
                         pacotesCategoriaBO.adicionar(categoria);
-                        categoria = pacotesCategoriaBO.selecionar(aux);
+                        categoria = pacotesCategoriaBO.selecionar(valor);
                     }
                     pacote.setCategoria(categoria);
+                    // Deixa pacote ativo!
                     pacote.setAtivo(true);
                     // Armazena pacote
                     if (pacote.getId() == null) {
                         // Pacote não existe - Cria
-                        new PacotesBO().adicionar(pacote);
+                        pacotesBO.adicionar(pacote);
                     } else {
                         try {
-                            //new PacotesBO().atualizar(pacote);
+                            //pacotesBO.atualizar(pacote);
                         } catch (Exception ex) {
                             Logger.getLogger(ArquivoUtil.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    pacote = new Pacotes();
                 }
                 linha = br.readLine();
             }
@@ -89,7 +100,7 @@ public class PacotesUtil {
 
     public void processarListaDePacotes() {
         List<String> lista_url = new RepositorioUtil().listarURLsPacotes();
-        PacotesBO pacotesBO = new PacotesBO();
+        //PacotesBO pacotesBO = new PacotesBO();
         //pacotesBO.prepararAtualizacaoPacotes();
         for (String url : lista_url) {
             ArquivoUtil au = new ArquivoUtil();

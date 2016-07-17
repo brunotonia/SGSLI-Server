@@ -31,6 +31,7 @@ public class RepositorioSecurityDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return repositorio;
     }
     
@@ -56,6 +57,7 @@ public class RepositorioSecurityDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
     

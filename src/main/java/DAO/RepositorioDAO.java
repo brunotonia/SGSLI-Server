@@ -32,6 +32,7 @@ public class RepositorioDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return repositorio;
     }
     
@@ -57,6 +58,7 @@ public class RepositorioDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
     
@@ -83,6 +85,7 @@ public class RepositorioDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
     
@@ -109,6 +112,7 @@ public class RepositorioDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
     

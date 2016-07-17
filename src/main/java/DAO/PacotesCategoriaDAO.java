@@ -18,6 +18,7 @@ public class PacotesCategoriaDAO {
         ps.setString(1, p.getCategoria().toLowerCase());
         ps.execute();
         ps.close();
+        cnn.commit();
         cnn.close();
     }
 
@@ -36,6 +37,7 @@ public class PacotesCategoriaDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return pctCategoria;
     }
 
@@ -54,6 +56,7 @@ public class PacotesCategoriaDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return pctCategoria;
     }
 
@@ -72,6 +75,7 @@ public class PacotesCategoriaDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
 

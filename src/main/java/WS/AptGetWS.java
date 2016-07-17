@@ -1,11 +1,15 @@
 package WS;
 
+import BO.InstalacaoBO;
 import BO.VersaoBO;
 import UTIL.PacotesUtil;
 import UTIL.RepositorioUtil;
+import VO.Instalacao;
 import VO.Versao;
+import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -33,36 +37,35 @@ public class AptGetWS {
         return aux;
     }
 
-    /*@Path("/install")
+    @Path("/install")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String instalarPacotes() {
-        InstalacaoJpaController ij = new InstalacaoJpaController(emf);
+        InstalacaoBO instalacaoBO = new InstalacaoBO();
         String resultado = "";
-        List<Instalacao> lista_install = ij.findInstalacaoEntities();
+        List<Instalacao> lista_install = instalacaoBO.listar();
         for (Instalacao i : lista_install) {
             if (i.getPacote().getAtivo() && i.getAtivo()) {
                 resultado += i.getPacote().getPacote() + " ";
             }
         }
         return resultado;
-    }*/
+    }
     
-    /* corrigir
     @Path("/install/{versao}")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String instalarPacotes(@PathParam("versao") Integer versao) {
-        InstalacaoJpaController ij = new InstalacaoJpaController(emf);
+        InstalacaoBO ij = new InstalacaoBO();
         String resultado = "";
-        List<Instalacao> lista_install = ij.findInstalaveis(versao);
+        List<Instalacao> lista_install = ij.listar(versao);
         for (Instalacao i : lista_install) {
             if (i.getPacote().getAtivo() && i.getAtivo()) {
                 resultado += i.getPacote().getPacote() + " ";
             }
         }
         return resultado;
-    }*/
+    }
     
     @Path("/install/versao")
     @GET

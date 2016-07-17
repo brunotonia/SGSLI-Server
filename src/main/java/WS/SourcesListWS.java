@@ -26,7 +26,7 @@ public class SourcesListWS {
         if (lista.isEmpty() || versao == null) {
             return "ERRO";
         } else {
-            String resultado = "#Gerado automaticamente pelo SGSLI!\n#Versão " + versao.getSources().toString() + "\n\n";
+            String resultado = "#SGSLI - Gerado automaticamente.\n#Versão " + versao.getSources().toString() + "\n\n";
             for (Repositorio repositorio : lista) {
                 resultado += repositorio.toString() + " \n";
             }

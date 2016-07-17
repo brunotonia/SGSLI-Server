@@ -24,11 +24,12 @@ public class RepositorioTipoDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return repTipo;
     }
     
     public List<RepositorioTipo> listar() throws Exception {
-        String sql = "select * from repositorio order by id ";
+        String sql = "select * from repositorio_tipo order by id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -44,6 +45,7 @@ public class RepositorioTipoDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
     

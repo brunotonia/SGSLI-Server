@@ -19,15 +19,16 @@ public class PacotesDAO {
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
 
-        ps.setString(1, p.getPacote().toLowerCase());
-        ps.setString(2, p.getVersao().toLowerCase());
-        ps.setString(3, p.getDependencias().toLowerCase());
+        ps.setString(1, p.getPacote());
+        ps.setString(2, p.getVersao());
+        ps.setString(3, p.getDependencias());
         ps.setString(4, p.getDescricao());
         ps.setInt(5, p.getCategoria().getId());
-        ps.setBoolean(5, p.getAtivo());
+        ps.setBoolean(6, p.getAtivo());
 
         ps.execute();
         ps.close();
+        cnn.commit();
         cnn.close();
     }
 
@@ -52,6 +53,7 @@ public class PacotesDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return pacote;
     }
 
@@ -76,6 +78,7 @@ public class PacotesDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return pacote;
     }
     
@@ -98,6 +101,7 @@ public class PacotesDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
     
@@ -122,6 +126,7 @@ public class PacotesDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
     
@@ -146,6 +151,7 @@ public class PacotesDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return lista;
     }
 

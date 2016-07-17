@@ -25,6 +25,7 @@ public class VersaoDAO {
         }
         rs.close();
         ps.close();
+        cnn.close();
         return retorno;
     }
     

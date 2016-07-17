@@ -27,7 +27,7 @@ CREATE TABLE usuario_tipo(id serial PRIMARY KEY, tipo VARCHAR(20) NOT NULL UNIQU
 INSERT INTO usuario_tipo(tipo) VALUES ('Administrador');
 INSERT INTO usuario_tipo(tipo) VALUES ('Professor');
 
-CREATE TABLE usuario(id serial PRIMARY KEY, tipo INTEGER NOT NULL, nome VARCHAR(100) NOT NULL, ativo BOOLEAN NOT NULL, CONSTRAINT fk_usuario_tipo FOREIGN KEY(tipo) REFERENCES usuario_tipo(id));
+CREATE TABLE usuario(id serial PRIMARY KEY, tipo INTEGER NOT NULL, nome VARCHAR(100) NOT NULL, login VARCHAR(100) NOT NULL UNIQUE, senha VARCHAR(100) NOT NULL, ativo BOOLEAN NOT NULL, CONSTRAINT fk_usuario_tipo FOREIGN KEY(tipo) REFERENCES usuario_tipo(id));
 
 
 /* Tabelas repositorio, repositorio_security e repositorio_tipo */
