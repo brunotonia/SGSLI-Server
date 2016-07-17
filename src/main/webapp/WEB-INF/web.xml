@@ -13,7 +13,7 @@
         </servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>WS</param-value>
+            <param-value>br.com.brunotonia.WS</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
