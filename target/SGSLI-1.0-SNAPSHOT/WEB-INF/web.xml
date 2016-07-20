@@ -15,7 +15,6 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
     <!-- Map these files with JSF -->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
@@ -33,6 +32,11 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    <!-- Tema Primefaces -->
+    <context-param>  
+        <param-name>primefaces.THEME</param-name>  
+        <param-value>black-tie</param-value>  
+    </context-param> 
     <!-- Fim do Servelet JSF -->
     <!-- Servelet REST -->
     <servlet>
@@ -59,4 +63,5 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    
 </web-app>

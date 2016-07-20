@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>SGSLI - Adicionar Repositório</title>
+    </h:head>
+    <h:body> 
+        <h:form> 
+            <p:growl id="msgs" showDetail="true" />
+            <p:panel header="Adicionar Repositório" style="margin-bottom:10px;">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="tipo" value="Tipo " />
+                    <p:selectOneMenu id="tipo" value="#{repositorioBean.tipo}" style="width:150px">
+                        <f:selectItems value="#{repositoriotipoBean.tipos}" var="obj" itemValue="#{obj.id}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="url" value="URL " />
+                    <p:inputText id="url" value="#{repositorioBean.repositorio.url}"/>
+                    <p:outputLabel for="versao" value="Versão " />
+                    <p:inputText id="versao" value="#{repositorioBean.repositorio.versao}"/>
+                    <p:outputLabel for="repositorios" value="Repositorios " />
+                    <p:inputText id="repositorios" value="#{repositorioBean.repositorio.repositorios}"/>
+                    <p:outputLabel for="descricao" value="Descrição " />
+                    <p:inputTextarea id="descricao" value="#{repositorioBean.repositorio.descricao}"/>
+                    <h:outputText value="Ativo " />
+                    <p:selectBooleanCheckbox value="#{repositorioBean.repositorio.ativo}" />
+                </h:panelGrid>
+                <p:separator />
+                <p:commandButton id="btnAdd" value="Adicionar" actionListener="#{repositorioBean.cadastrar}" icon="ui-icon-plus"/>
+                <p:commandButton actionListener="repositorios" immediate="true" value="Voltar" />
+                
+            </p:panel>
+        </h:form> 
+    </h:body>
+</html>
+

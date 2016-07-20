@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>SGSLI - Repositórios </title>
+    </h:head>
+    <h:body>
+        <h:form> 
+            <p:growl id="msgs" showDetail="true" />
+            <p:panel header="Gerenciar Repositórios" style="margin-bottom:10px;">
+                <p:dataTable var="reps" value="#{repositorioBean.repositorios}" sortMode="multiple"
+                        rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">>
+                    <f:facet name="header">
+                        Repositórios
+                    </f:facet>
+                    <p:column style="text-align: center; width: 100px" headerText="Tipo" sortBy="#{reps.tipo}">
+                        <h:outputText value="#{reps.tipo}" />
+                    </p:column>
+                    <p:column style="text-align: center; width: 300px" headerText="URL" sortBy="#{reps.url}">
+                        <h:outputText value="#{reps.url}" />
+                    </p:column>
+                    <p:column style="text-align: center; width: 100px" headerText="Versão" sortBy="#{reps.versao}">
+                        <h:outputText value="#{reps.versao}" />
+                    </p:column>
+                    <p:column style="text-align: center; width: 150px" headerText="Repositórios" sortBy="#{reps.repositorios}">
+                        <h:outputText value="#{reps.repositorios}" />
+                    </p:column>
+                    <p:column style="text-align: center; width: 150px" headerText="Descrição" sortBy="#{reps.descricao}">
+                        <h:outputText value="#{reps.descricao}" />
+                    </p:column>
+                    <p:column style="text-align: center; width: 50px" headerText="Ativo" sortBy="#{reps.ativo}">
+                        <p:selectBooleanCheckbox value="#{reps.ativo}" />
+                    </p:column>
+                    <p:column style="text-align: center; width: 150px" headerText="Ações">
+                        <p:commandButton action="repositorio_edt" actionListener="#{repositorioBean.selecionar}" icon="ui-icon-pencil" title="Editar"/>
+                    </p:column>
+                </p:dataTable>
+                <p:separator />
+                <p:commandButton action="repositorio_add" value="Adicionar Repositório" icon="ui-icon-plus"  />
+                <p:button outcome="index" value="Voltar"  icon="ui-icon-home" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

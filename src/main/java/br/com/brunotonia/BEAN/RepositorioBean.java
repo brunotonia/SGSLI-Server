@@ -19,51 +19,30 @@ package br.com.brunotonia.BEAN;
 import br.com.brunotonia.BO.RepositorioBO;
 import br.com.brunotonia.BO.RepositorioTipoBO;
 import br.com.brunotonia.VO.Repositorio;
-import br.com.brunotonia.VO.RepositorioTipo;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "repositorioBean")
-public class RepositorioBean {
+public class RepositorioBean implements Serializable {
 
     Repositorio repositorio = new Repositorio();
     List repositorios = new ArrayList();
     Integer tipo = new Integer(0);
+    String mensagem = "";
 
-    //construtor
     public RepositorioBean() {
         repositorios = new RepositorioBO().listar();
         repositorio = new Repositorio();
         tipo = new Integer(0);
+        mensagem = "";
     }
 
-    //Métodos dos botões 
-    public String cadastrar(ActionEvent actionEvent) {
-        //repositorio.setAtivo(true);
-        repositorio.setTipo(new RepositorioTipoBO().selecionar(tipo));
-        Boolean resultado = new RepositorioBO().adicionar(repositorio);
-        if (resultado) {
-            return "repositorios";
-        } else {
-            return "index";
-        }
-    }
-
-    public void alterar(ActionEvent actionEvent) {
-        /*new RepositorioBO().alterar(repositorio);
-		repositorios = new RepositorioBO().listarAtivos();
-		repositorio = new Repositorio();*/
-    }
-
-    public void excluir(ActionEvent actionEvent) {
-        /*new RepositorioBO().excluir(repositorio);
-		repositorios = new RepositorioBO().listarAtivos();
-		repositorio = new Repositorio();*/
-    }
-
-    //getters and setters
+    ///////////////////////////////////////////////////////////////////////////
+    // Getters e Setters
     public Repositorio getrepositorio() {
         return repositorio;
     }
@@ -88,4 +67,41 @@ public class RepositorioBean {
         this.tipo = tipo;
     }
 
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    //Métodos dos botões 
+
+    public String cadastrar(ActionEvent actionEvent) {
+        String str = "index?faces-redirect=true";
+        repositorio.setTipo(new RepositorioTipoBO().selecionar(tipo));
+        Boolean resultado = new RepositorioBO().adicionar(repositorio);
+        if (resultado) {
+            mensagem = "Repositorio cadastrado!";
+            str = "/repositorios?faces-redirect=true";
+        } else {
+            mensagem = "Repositorio cadastrado!";
+        }
+        return str;
+    }
+
+    public void alterar(ActionEvent actionEvent) {
+        /*new RepositorioBO().alterar(repositorio);
+		repositorios = new RepositorioBO().listarAtivos();
+		repositorio = new Repositorio();*/
+    }
+
+    public void excluir(ActionEvent actionEvent) {
+        /*new RepositorioBO().excluir(repositorio);
+		repositorios = new RepositorioBO().listarAtivos();
+		repositorio = new Repositorio();*/
+    }
+
+    //getters and setters
 }
