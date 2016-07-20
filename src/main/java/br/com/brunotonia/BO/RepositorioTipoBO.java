@@ -18,6 +18,15 @@ public class RepositorioTipoBO {
             return null;
         }
     }
+    
+    public RepositorioTipo selecionar(String tipo) {
+        try {
+            return new RepositorioTipoDAO().selecionar(tipo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public List<RepositorioTipo> listar() {
         try {

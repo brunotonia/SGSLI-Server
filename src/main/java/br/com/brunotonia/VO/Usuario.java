@@ -16,12 +16,8 @@
  */
 package br.com.brunotonia.VO;
 
-/**
- *
- * @author bruno
- */
 public class Usuario {
-    
+
     private Integer id;
     private UsuarioTipo tipo;
     private String nome;
@@ -79,7 +75,8 @@ public class Usuario {
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
+
+    /* JSF */
     
-    
-    
+
 }

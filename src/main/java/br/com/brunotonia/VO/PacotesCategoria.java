@@ -1,5 +1,7 @@
 package br.com.brunotonia.VO;
 
+import javax.persistence.Entity;
+
 public class PacotesCategoria {
     
     private Integer id;

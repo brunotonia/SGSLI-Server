@@ -43,7 +43,7 @@ public class RepositorioDAO {
             
             repositorio = new Repositorio();
             repositorio.setId(rs.getInt("id"));
-            repositorio.setRepositorioTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
+            repositorio.setTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
             repositorio.setUrl(rs.getString("url"));
             repositorio.setVersao(rs.getString("versao"));
             repositorio.setRepositorios(rs.getString("repositorios"));
@@ -68,7 +68,7 @@ public class RepositorioDAO {
             
             Repositorio repositorio = new Repositorio();
             repositorio.setId(rs.getInt("id"));
-            repositorio.setRepositorioTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
+            repositorio.setTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
             repositorio.setUrl(rs.getString("url"));
             repositorio.setVersao(rs.getString("versao"));
             repositorio.setRepositorios(rs.getString("repositorios"));
@@ -95,7 +95,7 @@ public class RepositorioDAO {
             
             Repositorio repositorio = new Repositorio();
             repositorio.setId(rs.getInt("id"));
-            repositorio.setRepositorioTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
+            repositorio.setTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
             repositorio.setUrl(rs.getString("url"));
             repositorio.setVersao(rs.getString("versao"));
             repositorio.setRepositorios(rs.getString("repositorios"));
@@ -122,7 +122,7 @@ public class RepositorioDAO {
             
             Repositorio repositorio = new Repositorio();
             repositorio.setId(rs.getInt("id"));
-            repositorio.setRepositorioTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
+            repositorio.setTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
             repositorio.setUrl(rs.getString("url"));
             repositorio.setVersao(rs.getString("versao"));
             repositorio.setRepositorios(rs.getString("repositorios"));

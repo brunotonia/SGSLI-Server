@@ -1,6 +1,8 @@
 package br.com.brunotonia.VO;
 
-public class Repositorio {
+import java.io.Serializable;
+
+public class Repositorio implements Serializable {
     
     private Integer id;
     private RepositorioTipo repositorioTipo;
@@ -25,7 +27,7 @@ public class Repositorio {
         return repositorioTipo;
     }
 
-    public void setRepositorioTipo(RepositorioTipo repositorioTipo) {
+    public void setTipo(RepositorioTipo repositorioTipo) {
         this.repositorioTipo = repositorioTipo;
     }
 

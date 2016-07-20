@@ -1,6 +1,8 @@
 package br.com.brunotonia.VO;
 
-public class RepositorioTipo {
+import java.io.Serializable;
+
+public class RepositorioTipo implements Serializable {
     
     private Integer id;
     private String tipo;
