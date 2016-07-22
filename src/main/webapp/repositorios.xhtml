@@ -1,47 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>SGSLI - Repositórios </title>
+        <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form> 
-            <p:growl id="msgs" showDetail="true" />
-            <p:panel header="Gerenciar Repositórios" style="margin-bottom:10px;">
-                <p:dataTable var="reps" value="#{repositorioBean.repositorios}" sortMode="multiple"
-                        rows="10" paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15">>
-                    <f:facet name="header">
-                        Repositórios
-                    </f:facet>
-                    <p:column style="text-align: center; width: 100px" headerText="Tipo" sortBy="#{reps.tipo}">
-                        <h:outputText value="#{reps.tipo}" />
-                    </p:column>
-                    <p:column style="text-align: center; width: 300px" headerText="URL" sortBy="#{reps.url}">
-                        <h:outputText value="#{reps.url}" />
-                    </p:column>
-                    <p:column style="text-align: center; width: 100px" headerText="Versão" sortBy="#{reps.versao}">
-                        <h:outputText value="#{reps.versao}" />
-                    </p:column>
-                    <p:column style="text-align: center; width: 150px" headerText="Repositórios" sortBy="#{reps.repositorios}">
-                        <h:outputText value="#{reps.repositorios}" />
-                    </p:column>
-                    <p:column style="text-align: center; width: 150px" headerText="Descrição" sortBy="#{reps.descricao}">
-                        <h:outputText value="#{reps.descricao}" />
-                    </p:column>
-                    <p:column style="text-align: center; width: 50px" headerText="Ativo" sortBy="#{reps.ativo}">
-                        <p:selectBooleanCheckbox value="#{reps.ativo}" />
-                    </p:column>
-                    <p:column style="text-align: center; width: 150px" headerText="Ações">
-                        <p:commandButton action="repositorio_edt" actionListener="#{repositorioBean.selecionar}" icon="ui-icon-pencil" title="Editar"/>
-                    </p:column>
-                </p:dataTable>
+        <!-- tabela de dados -->
+        <div align="center">
+            <h:form id="formPrincipal">
+                <p:panel header="Gerenciar Repositórios" style="margin-bottom:10px;">
+                    <p:spacer width="100" height="10" />
+                    <p:dataTable 
+                        var="reps" 
+                        value="#{repositorioBean.repositorios}"
+                        id="tabela"
+                        rows="5" 
+                        paginator="true"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="5,10,15"
+                        sortMode="multiple">
+                        <f:facet name="header">Repositórios Cadastrados</f:facet>
+                        <p:column style="text-align: center; width: 400px" headerText="Repositorio" 
+                                  sortBy="#{reps.tipo} #{reps.url}#{reps.versao} #{reps.repositorios}">
+                            <h:inputHidden value="#{reps.id}" />
+                            <h:outputText value="#{reps.tipo} #{reps.url}#{reps.versao} #{reps.repositorios}" />
+                        </p:column>
+                        <p:column style="text-align: center; width: 150px" headerText="Descrição" sortBy="#{reps.descricao}">
+                            <h:outputText value="#{reps.descricao}" />
+                        </p:column>
+                        <p:column style="text-align: center; width: 50px" headerText="Ativo" sortBy="#{reps.ativo}">
+                            <p:selectBooleanCheckbox disabled="true" value="#{reps.ativo}" />
+                        </p:column>
+                        <!-- coluna de ações -->
+                        <p:column style="text-align: center; width: 50px" headerText="Ações">
+                            <p:commandButton 
+                                title="Editar Repositório" 
+                                type="button" 
+                                onclick="PF('dialogAlterar').show();"
+                                icon="ui-icon-pencil">
+                                <f:setPropertyActionListener target="#{repositorioBean.repositorio}"
+                                                        value="#{reps}" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+            <p:separator />
+            <p:commandButton
+                value="Adicionar Repositório"
+                type="button"
+                onclick="PF('dialogCadastrar').show();"
+                icon="ui-icon-plus" 
+                ajax="true" />
+        </div>
+        <!-- formulário de alteração -->
+        <h:form id="formAlterar">
+            <p:dialog 
+                header="Editar Repositório" 
+                widgetVar="dialogAlterar" 
+                modal="true"
+                id="Alterar">
+                <h:inputHidden value="#{repositorioBean.repositorio.id}" />
+                <p:panelGrid id="panelAlterar" columns="2">
+                    <p:outputLabel for="tipo" value="Tipo " />
+                    <p:selectOneMenu id="tipo" value="#{repositorioBean.repositorio.tipo}" style="width:150px">
+                        <f:selectItems value="#{repositoriotipoBean.tipos}" var="obj" itemValue="#{obj.id}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="url" value="URL " />
+                    <p:inputText id="url" value="#{repositorioBean.repositorio.url}"/>
+                    <p:outputLabel for="versao" value="Versão " />
+                    <p:inputText id="versao" value="#{repositorioBean.repositorio.versao}"/>
+                    <p:outputLabel for="repositorios" value="Repositorios " />
+                    <p:inputText id="repositorios" value="#{repositorioBean.repositorio.repositorios}"/>
+                    <p:outputLabel for="descricao" value="Descrição " />
+                    <p:inputTextarea id="descricao" value="#{repositorioBean.repositorio.descricao}"/>
+                    <h:outputText value="Ativo " />
+                    <p:selectBooleanCheckbox value="#{repositorioBean.repositorio.ativo}" />
+                </p:panelGrid>
+                <p:spacer width="100" height="10" />
                 <p:separator />
-                <p:commandButton action="repositorio_add" value="Adicionar Repositório" icon="ui-icon-plus"  />
-                <p:button outcome="index" value="Voltar"  icon="ui-icon-home" />
-            </p:panel>
+                <p:commandButton 
+                    value="Editar"
+                    actionListener="#{repositorioBean.alterar}"
+                    update=":formPrincipal:tabela"
+                    oncomplete="dialogAlterar.hide()" 
+                    icon="ui-icon-pencil" 
+                    immediate="true"/>
+            </p:dialog>
         </h:form>
+        <!-- formulário de cadastro -->
+        <p:dialog 
+            header="Adicionar Repositório" 
+            widgetVar="dialogCadastrar"
+            modal="true"
+            dynamic="true">
+            <h:form id="formCadastrar">
+                <p:panelGrid id="panelCadastrar" columns="2">
+                    <p:outputLabel for="tipo" value="Tipo " />
+                    <p:selectOneMenu id="tipo" value="#{repositorioBean.tipo}" style="width:150px">
+                        <f:selectItems value="#{repositoriotipoBean.tipos}" var="obj" itemValue="#{obj.id}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="url" value="URL " />
+                    <p:inputText id="url" value="#{repositorioBean.repositorio.url}"/>
+                    <p:outputLabel for="versao" value="Versão " />
+                    <p:inputText id="versao" value="#{repositorioBean.repositorio.versao}"/>
+                    <p:outputLabel for="repositorios" value="Repositorios " />
+                    <p:inputText id="repositorios" value="#{repositorioBean.repositorio.repositorios}"/>
+                    <p:outputLabel for="descricao" value="Descrição " />
+                    <p:inputTextarea id="descricao" value="#{repositorioBean.repositorio.descricao}"/>
+                    <h:outputText value="Ativo " />
+                    <p:selectBooleanCheckbox value="#{repositorioBean.repositorio.ativo}" />
+                </p:panelGrid>
+                <p:spacer width="100" height="10" />
+                <p:separator />
+                <p:commandButton
+                    ajax="false"
+                    icon="ui-icon-plus"
+                    value="Adicionar"
+                    actionListener="#{repositorioBean.adicionar}"
+                    update=":formPrincipal:tabela"
+                    oncomplete="dialogCadastrar.hide()" />
+            </h:form>
+        </p:dialog>
+        <!-- formulário de exclusão -->
+        <h:form id="formExcluir">
+            <p:confirmDialog id="Excluir"
+                             message="Você gostaria de Deletar o #{reps.tipo} #{reps.url} #{reps.versao} #{reps.repositorios}?"
+                             header="Excluir" severity="alert" widgetVar="confirmation">
+                <p:commandButton id="confirm" value="Sim"
+                                 oncomplete="confirmation.hide()"
+                                 actionListener="#{pessoaBean.excluir}"
+                                 update=":formPrincipal:tabela" />
+                <p:commandButton id="decline" value="Não"
+                                 onclick="confirmation.hide()" type="button" />
+
+            </p:confirmDialog>
+        </h:form>
+
     </h:body>
 </html>
+
