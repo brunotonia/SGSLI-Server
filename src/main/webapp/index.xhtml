@@ -6,22 +6,16 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title><ui:insert name="title">SISP - Sistema Integrado de Saúde Pública</ui:insert></title>
+        <title>SGSLI - Sistema Gerenciador de Softwares em Laboratórios de Informática</title>
+        <style type="text/css">
+        .ui-widget,.ui-widget .ui-widget {
+            font-size: 95% !important;
+        }
+    </style>
     </h:head>
-    <h:body style="font-size: 10pt">
-        <h:form>
-            <p:layout fullPage="true" >
-                <p:layoutUnit  position="top" header="TOPO DO TEMPLATE" >
-                </p:layoutUnit>
-                <p:layoutUnit position="left" header="Menu" >
-                    <!--<ui:include src="menu.xhtml"/>-->
-                </p:layoutUnit>
-                <p:layoutUnit position="center"  header="Centro" >
-                </p:layoutUnit>
-                <p:layoutUnit position="right"  header="Lado Direito" >
-                    <p:calendar mode="inline"/>
-                </p:layoutUnit>
-            </p:layout>
-        </h:form>
+    <h:body>
+        <p:outputLabel style="font-size: 20px;">SGSLI - Sistema Gerenciador de Softwares em Laboratórios de Informática</p:outputLabel>
+        
+        
     </h:body>
 </html>
