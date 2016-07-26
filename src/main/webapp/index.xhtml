@@ -2,20 +2,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:h="http://java.sun.com/jsf/html" 
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>SGSLI - Sistema Gerenciador de Softwares em Laboratórios de Informática</title>
         <style type="text/css">
-        .ui-widget,.ui-widget .ui-widget {
-            font-size: 95% !important;
-        }
-    </style>
+            .ui-widget,.ui-widget .ui-widget {
+                font-size: 95% !important;
+            }
+        </style>
     </h:head>
     <h:body>
-        <p:outputLabel style="font-size: 20px;">SGSLI - Sistema Gerenciador de Softwares em Laboratórios de Informática</p:outputLabel>
-        
-        
+        <p:panel header="SGSLI - Sistema Gerenciador de Softwares em Laboratórios de Informática" >
+            <div align="center">
+                <p:layout style="min-width:400px; min-height:400px;">
+                    <p:layoutUnit position="center" resizable="true"  size="78%">
+                    </p:layoutUnit>
+                    <p:layoutUnit position="east" size="20%" >
+                        <h:form id="formLogin" >
+                            <p:messages id="messages" />
+                            <p:panel header="Login" >
+                                <p:panelGrid id="panelAdicionar" columns="2">
+                                    <p:outputLabel for="login" value="Login " />
+                                    <p:inputText id="login" value="#{loginBean.login}"/>
+                                    <p:outputLabel for="senha" value="Senha " />
+                                    <p:inputText id="senha" value="#{loginBean.senha}"/>
+                                </p:panelGrid>
+                                <p:separator />
+                                <p:commandButton 
+                                    icon="fa fa-lock"
+                                    value="Login" 
+                                    action="#{loginBean.login()}" 
+                                    ajax="false" />
+                            </p:panel>
+                        </h:form>
+                    </p:layoutUnit>
+                </p:layout>
+            </div>
+        </p:panel>
+        <p:spacer width="100" height="10" />
+        <p:layout style="min-width:50px; min-height:50px;">
+            <div align="center">
+                <p:layoutUnit position="center" resizable="true"  size="98%" >
+                    <h:outputLabel value="SGSLI - Sistema Gerenciador de Softwares em Laboratórios de Informática" />
+                </p:layoutUnit>
+            </div>
+        </p:layout>
     </h:body>
 </html>
