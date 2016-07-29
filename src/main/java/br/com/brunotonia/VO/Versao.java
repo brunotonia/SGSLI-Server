@@ -22,6 +22,7 @@ public class Versao {
     private Integer sources;
     private Integer instalacao;
     private Integer remocao;
+    private Integer update;
     private Integer upgrade;
     private Integer distUpdate;
     
@@ -60,6 +61,14 @@ public class Versao {
         this.remocao = remocao;
     }
 
+    public Integer getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(Integer update) {
+        this.update = update;
+    }
+
     public Integer getUpgrade() {
         return this.upgrade;
     }
@@ -82,6 +91,7 @@ public class Versao {
                 + "  sources = " + sources + "\n"
                 + "  instalação = " + instalacao + "\n"
                 + "  remoção = " + remocao + "\n"
+                + "  update = " + update + "\n"
                 + "  upgrade = " + upgrade+ "\n"
                 + "  distUpdate = " + distUpdate;
     }

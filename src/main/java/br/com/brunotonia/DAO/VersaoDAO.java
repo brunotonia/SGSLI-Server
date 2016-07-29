@@ -25,7 +25,7 @@ public class VersaoDAO {
 
     public Versao selecionar() throws Exception {
         Versao retorno = null;
-        String sql = "select * from versao where id = 1";
+        String sql = "SELECT * FROM versao WHERE id = 1";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -36,6 +36,7 @@ public class VersaoDAO {
             retorno.setSources(rs.getInt("sources"));
             retorno.setInstalacao(rs.getInt("instalacao"));
             retorno.setRemocao(rs.getInt("remocao"));
+            retorno.setUpdate(rs.getInt("updt"));
             retorno.setUpgrade(rs.getInt("upgrade"));
             retorno.setDistUpdate(rs.getInt("dist_update"));
         }
@@ -43,6 +44,48 @@ public class VersaoDAO {
         ps.close();
         cnn.close();
         return retorno;
+    }
+    
+    public void incrementarUpdate() throws Exception {
+        String sql = "UPDATE versao SET "
+                + " updt = updt + 1"
+                + " WHERE id = 1";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+
+        ps.execute();
+        ps.close();
+        cnn.commit();
+        cnn.close();
+    }
+    
+    public void incrementarUpgrade() throws Exception {
+        String sql = "UPDATE versao SET "
+                + " upgrade = upgrade + 1"
+                + " WHERE id = 1";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+
+        ps.execute();
+        ps.close();
+        cnn.commit();
+        cnn.close();
+    }
+    
+    public void incrementarDistUpgrade() throws Exception {
+        String sql = "UPDATE versao SET "
+                + " dist_upgrade = dist_upgrade + 1"
+                + " WHERE id = 1";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+
+        ps.execute();
+        ps.close();
+        cnn.commit();
+        cnn.close();
     }
     
 }

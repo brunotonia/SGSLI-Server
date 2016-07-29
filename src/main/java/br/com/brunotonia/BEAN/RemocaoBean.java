@@ -16,7 +16,52 @@
  */
 package br.com.brunotonia.BEAN;
 
+import br.com.brunotonia.BO.RemocaoBO;
+import br.com.brunotonia.VO.Remocao;
+import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
 
+@ManagedBean(name = "remocaoBean")
 public class RemocaoBean {
     
+    private Remocao remocao = new Remocao();
+    private List<Remocao> listaRemocao = new RemocaoBO().listar();
+
+    public RemocaoBean() {
+        this.remocao = new Remocao();
+        this.listaRemocao = new RemocaoBO().listar();
+    }
+
+    public Remocao getUsuario() {
+        return remocao;
+    }
+
+    public void setUsuario(Remocao remocao) {
+        this.remocao = remocao;
+    }
+
+    public List<Remocao> getListaUsuarios() {
+        return listaRemocao;
+    }
+
+    public void setListaUsuarios(List<Remocao> listaRemocao) {
+        this.listaRemocao = listaRemocao;
+    }
+    
+    public void prepararAdicionar(ActionEvent actionEvent) {
+        this.remocao = new Remocao();
+        this.listaRemocao = new RemocaoBO().listar();
+    }
+    
+    public void adicionar(ActionEvent actionEvent) {
+        new RemocaoBO().adicionar(remocao);
+        prepararAdicionar(actionEvent);
+    }
+    
+    public void ativarDesativar(ActionEvent actionEvent) {
+        System.err.println("excluir");
+        new RemocaoBO().ativarDesativar(remocao);
+        prepararAdicionar(actionEvent);
+    }
 }

@@ -16,45 +16,52 @@
  */
 package br.com.brunotonia.BO;
 
-import br.com.brunotonia.DAO.VersaoDAO;
-import br.com.brunotonia.VO.Versao;
+import br.com.brunotonia.DAO.RemocaoDAO;
+import br.com.brunotonia.VO.Remocao;
+import java.util.List;
 
-public class VersaoBO {
+public class RemocaoBO {
     
-    public VersaoBO() {
-        
+    public void adicionar(Remocao instalacao) {
+        try {
+            new RemocaoDAO().adicionar(instalacao);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
-    public Versao selecionar() {
+    public Remocao selecionar(Integer id) {
         try {
-            return new VersaoDAO().selecionar();
+            return new RemocaoDAO().selecionar(id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
     
-    public void incrementarUpdate() {
+    public void ativarDesativar(Remocao instalacao) {
         try {
-            new VersaoDAO().incrementarUpdate();
+            new RemocaoDAO().ativarDesativar(instalacao);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void incrementarUpgrade() {
+    public List<Remocao> listar() {
         try {
-            new VersaoDAO().incrementarUpgrade();
+            return new RemocaoDAO().listar();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
     
-    public void incrementarDistUpgrade(){
+    public List<Remocao> listar(Integer id) {
         try {
-            new VersaoDAO().incrementarDistUpgrade();
+            return new RemocaoDAO().listar(id);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
     

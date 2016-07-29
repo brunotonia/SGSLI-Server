@@ -17,10 +17,10 @@
 package br.com.brunotonia.WS;
 
 import br.com.brunotonia.BO.InstalacaoBO;
+import br.com.brunotonia.BO.RemocaoBO;
 import br.com.brunotonia.BO.VersaoBO;
-import br.com.brunotonia.UTIL.PacotesUtil;
-import br.com.brunotonia.UTIL.RepositorioUtil;
 import br.com.brunotonia.VO.Instalacao;
+import br.com.brunotonia.VO.Remocao;
 import br.com.brunotonia.VO.Versao;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -32,7 +32,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/apt-get")
 public class AptGetWS {
     
-    @Path("/update")
+    /*@Path("/update")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String atualizarListaPacotes() {
@@ -40,9 +40,9 @@ public class AptGetWS {
         new PacotesUtil().processarListaDePacotes();
         long tempoTotal = (System.currentTimeMillis() - tempoInicial) / 1000;
         return "Tempo de execução: " + tempoTotal + " segundos";
-    }
+    }*/
 
-    @Path("/update/URLs")
+    /*@Path("/update/URLs")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String exibirListaURLs() {
@@ -51,9 +51,18 @@ public class AptGetWS {
             aux += s + "\n";
         }
         return aux;
+    }*/
+    
+    @Path("/update/versao")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
+    public String versaoUpdate() {
+        VersaoBO versaoBO = new VersaoBO();
+        Versao versao = versaoBO.selecionar();
+        return versao.getUpdate().toString();
     }
 
-    @Path("/install")
+    /*@Path("/install")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String instalarPacotes() {
@@ -66,15 +75,15 @@ public class AptGetWS {
             }
         }
         return resultado;
-    }
+    }*/
     
     @Path("/install/{versao}")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String instalarPacotes(@PathParam("versao") Integer versao) {
-        InstalacaoBO ij = new InstalacaoBO();
+        InstalacaoBO instalacaoBO = new InstalacaoBO();
         String resultado = "";
-        List<Instalacao> lista_install = ij.listar(versao);
+        List<Instalacao> lista_install = instalacaoBO.listar(versao);
         for (Instalacao i : lista_install) {
             if (i.getPacote().getAtivo() && i.getAtivo()) {
                 resultado += i.getPacote().getPacote() + " ";
@@ -107,13 +116,20 @@ public class AptGetWS {
         return resultado;
     }*/
     
-    /*@Path("/remove/{versao}")
+    @Path("/remove/{versao}")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public String removerPacotes(@PathParam("versao") Integer versao) {
-        return "hummm! programar o caminho para a formatura é!\n"
-                + "                                          yoda, mestre";
-    }*/
+        RemocaoBO remocaoBO = new RemocaoBO();
+        String resultado = "";
+        List<Remocao> lista_remove = remocaoBO.listar(versao);
+        for (Remocao i : lista_remove) {
+            if (i.getPacote().getAtivo() && i.getAtivo()) {
+                resultado += i.getPacote().getPacote() + " ";
+            }
+        }
+        return resultado;
+    }
     
     @Path("/remove/versao")
     @GET

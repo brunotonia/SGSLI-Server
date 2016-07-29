@@ -26,6 +26,7 @@ DROP FUNCTION inserir_instalacao_remocao();
 CREATE TABLE usuario_tipo(id serial PRIMARY KEY, tipo VARCHAR(20) NOT NULL UNIQUE);
 INSERT INTO usuario_tipo(tipo) VALUES ('Administrador');
 INSERT INTO usuario_tipo(tipo) VALUES ('Professor');
+INSERT INTO usuario_tipo(tipo) VALUES ('Estagiário');
 
 CREATE TABLE usuario(id serial PRIMARY KEY, tipo INTEGER NOT NULL, nome VARCHAR(100) NOT NULL, login VARCHAR(100) NOT NULL UNIQUE, senha VARCHAR(100) NOT NULL, ativo BOOLEAN NOT NULL, CONSTRAINT fk_usuario_tipo FOREIGN KEY(tipo) REFERENCES usuario_tipo(id));
 
@@ -42,9 +43,9 @@ CREATE TABLE repositorio(id serial PRIMARY KEY, tipo INTEGER NOT NULL, url VARCH
 CREATE TABLE repositorio_security(id serial PRIMARY KEY, tipo INTEGER NOT NULL, url VARCHAR(100) NOT NULL, versao VARCHAR(20) NOT NULL, repositorios VARCHAR(100) NOT NULL, descricao TEXT NOT NULL, ativo BOOLEAN NOT NULL, CONSTRAINT fk_repositorio_tipo2 FOREIGN KEY(tipo) REFERENCES repositorio_tipo(id));
 
 /* Tabela versao */
-CREATE TABLE versao(id serial PRIMARY KEY, sources INTEGER NOT NULL, instalacao INTEGER NOT NULL, remocao INTEGER NOT NULL, upgrade INTEGER NOT NULL, dist_update INTEGER NOT NULL);
+CREATE TABLE versao(id serial PRIMARY KEY, sources INTEGER NOT NULL, instalacao INTEGER NOT NULL, remocao INTEGER NOT NULL, updt INTEGER NOT NULL, upgrade INTEGER NOT NULL, dist_update INTEGER NOT NULL);
 
-INSERT INTO versao VALUES (1, 0, 0, 0, 0, 0);
+INSERT INTO versao VALUES (1, 0, 0, 0, 0, 0, 0);
 
 /* Triggers versao_sources */
 CREATE FUNCTION versao_sources() RETURNS TRIGGER as $$

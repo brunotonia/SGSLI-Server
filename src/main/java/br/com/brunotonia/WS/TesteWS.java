@@ -39,7 +39,7 @@ public class TesteWS {
                 + "\n";
     }
     
-    @Path("/versao")
+    /*@Path("/versao")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String versao() {
@@ -50,6 +50,6 @@ public class TesteWS {
         } else {
             return v.toString();
         }
-    }
+    }*/
     
 }

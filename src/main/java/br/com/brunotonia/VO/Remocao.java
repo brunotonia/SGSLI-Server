@@ -14,32 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.com.brunotonia.BEAN;
+package br.com.brunotonia.VO;
 
-import br.com.brunotonia.BO.VersaoBO;
-import br.com.brunotonia.UTIL.PacotesUtil;
-import javax.faces.bean.ManagedBean;
+public class Remocao {
+    
+    private Integer id;
+    private Pacotes pacote;
+    private Boolean ativo;
 
-@ManagedBean(name = "atualizacoesBean")
-public class AtualizacoesBean {
-
-    public AtualizacoesBean() {
+    public Remocao() {
     }
 
-    public void atualizaListaPacotes() {
-        new PacotesUtil().processarListaDePacotes();
+    public Integer getId() {
+        return id;
     }
 
-    public void atualizaUpdate() {
-        new VersaoBO().incrementarUpdate();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void atualizaUpgrade() {
-        new VersaoBO().incrementarUpgrade();
+    public Pacotes getPacote() {
+        return pacote;
     }
 
-    public void atualizaDistUpgrade() {
-        new VersaoBO().incrementarDistUpgrade();
+    public void setPacote(Pacotes pacote) {
+        this.pacote = pacote;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+    
 }

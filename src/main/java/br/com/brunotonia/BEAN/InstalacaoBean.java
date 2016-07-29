@@ -20,11 +20,48 @@ import br.com.brunotonia.BO.InstalacaoBO;
 import br.com.brunotonia.VO.Instalacao;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "instalacaoBean")
 public class InstalacaoBean {
     
-    private Instalacao usuario = new Instalacao();
-    private List<Instalacao> listaUsuarios = new InstalacaoBO().listar();
+    private Instalacao instalacao = new Instalacao();
+    private List<Instalacao> listaInstalacao = new InstalacaoBO().listar();
+
+    public InstalacaoBean() {
+        this.instalacao = new Instalacao();
+        this.listaInstalacao = new InstalacaoBO().listar();
+    }
+
+    public Instalacao getUsuario() {
+        return instalacao;
+    }
+
+    public void setUsuario(Instalacao instalacao) {
+        this.instalacao = instalacao;
+    }
+
+    public List<Instalacao> getListaUsuarios() {
+        return listaInstalacao;
+    }
+
+    public void setListaUsuarios(List<Instalacao> listaInstalacao) {
+        this.listaInstalacao = listaInstalacao;
+    }
     
+    public void prepararAdicionar(ActionEvent actionEvent) {
+        this.instalacao = new Instalacao();
+        this.listaInstalacao = new InstalacaoBO().listar();
+    }
+    
+    public void adicionar(ActionEvent actionEvent) {
+        new InstalacaoBO().adicionar(instalacao);
+        prepararAdicionar(actionEvent);
+    }
+    
+    public void ativarDesativar(ActionEvent actionEvent) {
+        System.err.println("excluir");
+        new InstalacaoBO().ativarDesativar(instalacao);
+        prepararAdicionar(actionEvent);
+    }
 }
