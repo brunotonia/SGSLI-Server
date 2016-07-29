@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 bruno
+ * Copyright (C) 2016 Bruno Roberto Vasconcelos Tonia
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +45,14 @@ public class UsuarioBO {
     public void alterarSenha(Usuario usuario) {
         try {
             new UsuarioDAO().alterarSenha(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void ativarDesativar(Usuario usuario) {
+        try {
+            new UsuarioDAO().ativarDesativar(usuario);
         } catch (Exception e) {
             e.printStackTrace();
         }

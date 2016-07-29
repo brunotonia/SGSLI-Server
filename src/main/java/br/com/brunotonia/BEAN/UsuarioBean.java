@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 bruno
+ * Copyright (C) 2016 Bruno Roberto Vasconcelos Tonia
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,8 +103,13 @@ public class UsuarioBean {
         prepararAdicionar(actionEvent);
     }
     
+    public void alterarSenha(ActionEvent actionEvent) {
+        new UsuarioBO().alterarSenha(usuario);
+        prepararAdicionar(actionEvent);
+    } 
+    
     public void ativarDesativar(ActionEvent actionEvent) {
-        
+        new UsuarioBO().ativarDesativar(usuario);
         prepararAdicionar(actionEvent);
     } 
 }
