@@ -21,6 +21,27 @@ public class RepositorioBO {
             new RepositorioDAO().adicionar(repositorio);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public Boolean alterar(Repositorio repositorio) {
+        try {
+            new RepositorioDAO().alterar(repositorio);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public Boolean excluir(Integer id) {
+        try {
+            new RepositorioDAO().excluir(id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

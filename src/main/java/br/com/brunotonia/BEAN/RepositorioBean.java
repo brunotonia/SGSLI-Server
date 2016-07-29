@@ -19,31 +19,28 @@ package br.com.brunotonia.BEAN;
 import br.com.brunotonia.BO.RepositorioBO;
 import br.com.brunotonia.BO.RepositorioTipoBO;
 import br.com.brunotonia.VO.Repositorio;
-import java.io.Serializable;
-import java.util.ArrayList;
+import br.com.brunotonia.VO.RepositorioTipo;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "repositorioBean")
-public class RepositorioBean implements Serializable {
+public class RepositorioBean {
 
-    Repositorio repositorio = new Repositorio();
-    List repositorios = new ArrayList();
-    Integer tipo = new Integer(0);
-    String mensagem = "";
+    private Repositorio repositorio = new Repositorio();
+    private List<Repositorio> listaRepositorios = new RepositorioBO().listar();
+    private RepositorioTipo tipo = new RepositorioTipo();
+    private List<RepositorioTipo> listaTipos = new RepositorioTipoBO().listar();
+    private Integer idTipo;
 
     public RepositorioBean() {
-        repositorios = new RepositorioBO().listar();
         repositorio = new Repositorio();
-        tipo = new Integer(0);
-        mensagem = "";
+        listaRepositorios = new RepositorioBO().listar();
+        tipo = new RepositorioTipo();
+        listaTipos = new RepositorioTipoBO().listar();
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Getters e Setters
-    public Repositorio getrepositorio() {
+    public Repositorio getRepositorio() {
         return repositorio;
     }
 
@@ -51,57 +48,61 @@ public class RepositorioBean implements Serializable {
         this.repositorio = repositorio;
     }
 
-    public List getRepositorios() {
-        return repositorios;
+    public List<Repositorio>  getListaRepositorios() {
+        return listaRepositorios;
     }
 
-    public void setRepositorios(List repositorios) {
-        this.repositorios = repositorios;
+    public void setListaRepositorios(List listaRepositorios) {
+        this.listaRepositorios = listaRepositorios;
     }
 
-    public Integer getTipo() {
+    public RepositorioTipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(Integer tipo) {
+    public void setTipo(RepositorioTipo tipo) {
         this.tipo = tipo;
     }
 
-    public String getMensagem() {
-        return mensagem;
+    public List<RepositorioTipo> getListaTipos() {
+        return listaTipos;
     }
 
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
+    public void setListaTipos(List listaTipos) {
+        this.listaTipos = listaTipos;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    //Métodos dos botões 
-
-    public String cadastrar(ActionEvent actionEvent) {
-        String str = "index?faces-redirect=true";
-        repositorio.setTipo(new RepositorioTipoBO().selecionar(tipo));
-        Boolean resultado = new RepositorioBO().adicionar(repositorio);
-        if (resultado) {
-            mensagem = "Repositorio cadastrado!";
-            str = "/repositorios?faces-redirect=true";
-        } else {
-            mensagem = "Repositorio cadastrado!";
-        }
-        return str;
+    public Integer getIdTipo() {
+        return idTipo;
     }
 
-    public void alterar(ActionEvent actionEvent) {
-        /*new RepositorioBO().alterar(repositorio);
-		repositorios = new RepositorioBO().listarAtivos();
-		repositorio = new Repositorio();*/
+    public void setIdTipo(Integer idTipo) {
+        this.idTipo = idTipo;
+    }
+    
+    public void prepararAdicionar(ActionEvent actionEvent) {
+        repositorio = new Repositorio();
+        tipo = new RepositorioTipo();
+        listaRepositorios = new RepositorioBO().listar();
+        idTipo = 0;
     }
 
+    public void adicionar(ActionEvent actionEvent) {
+        repositorio.setTipo(new RepositorioTipoBO().selecionar(idTipo));
+        new RepositorioBO().adicionar(repositorio);
+        prepararAdicionar(actionEvent);
+    }
+    
+    public void editar(ActionEvent actionEvent) {
+        repositorio.setTipo(new RepositorioTipoBO().selecionar(idTipo));
+        new RepositorioBO().alterar(repositorio);
+        prepararAdicionar(actionEvent);
+    }
+    
     public void excluir(ActionEvent actionEvent) {
-        /*new RepositorioBO().excluir(repositorio);
-		repositorios = new RepositorioBO().listarAtivos();
-		repositorio = new Repositorio();*/
+        System.err.println("excluir");
+        new RepositorioBO().excluir(repositorio.getId());
+        prepararAdicionar(actionEvent);
     }
-
-    //getters and setters
+    
 }

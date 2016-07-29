@@ -10,6 +10,7 @@
     </context-param>
     <!-- Servelet JSF -->
     <!-- JSF mapping -->
+    
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -20,11 +21,11 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
+    </servlet-mapping>-->
+    <servlet-mapping> 
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
@@ -37,12 +38,23 @@
         <param-name>primefaces.THEME</param-name>  
         <param-value>black-tie</param-value>  
     </context-param> 
+    <context-param>
+        <param-name>primefaces.FONT_AWESOME</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <!-- Remover um Warning do Primefaces -->
+    <mime-mapping>  
+        <extension>woff2</extension>  
+        <mime-type>application/x-font-woff2</mime-type>  
+    </mime-mapping>
     <!-- -->
     <context-param> 
         <param-name>com.sun.faces.writeStateAtFormEnd</param-name> 
         <param-value>false</param-value> 
     </context-param>
     <!-- Fim do Servelet JSF -->
+    
+    
     <!-- Servelet REST -->
     <servlet>
         <servlet-name>Jersey REST Service</servlet-name>
@@ -58,7 +70,7 @@
         <url-pattern>/client-data/*</url-pattern>
     </servlet-mapping>
     <!-- Fim do Servelet REST -->
-    <!-- Configuralao de Sessão -->
+    <!-- Configuração de Sessão -->
     <session-config>
         <session-timeout>
             30
@@ -66,7 +78,8 @@
     </session-config>
     <!-- Arquivo inicial -->
     <welcome-file-list>
-        <welcome-file>index.xhtml</welcome-file>
+        <welcome-file>/index.xhtml</welcome-file>
     </welcome-file-list>
+    
     
 </web-app>

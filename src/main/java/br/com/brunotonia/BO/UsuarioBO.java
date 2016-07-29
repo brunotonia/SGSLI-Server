@@ -18,6 +18,7 @@ package br.com.brunotonia.BO;
 
 import br.com.brunotonia.DAO.UsuarioDAO;
 import br.com.brunotonia.VO.Usuario;
+import java.util.List;
 
 /**
  *
@@ -33,7 +34,31 @@ public class UsuarioBO {
         }
     }
     
-    public Usuario selecinar(Integer id) {
+    public void alterar(Usuario usuario) {
+        try {
+            new UsuarioDAO().alterar(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void alterarSenha(Usuario usuario) {
+        try {
+            new UsuarioDAO().alterarSenha(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void excluir(Integer id) {
+        try {
+            new UsuarioDAO().excluir(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public Usuario selecionar(Integer id) {
         try {
             return new UsuarioDAO().selecionar(id);
         } catch (Exception e) {
@@ -45,6 +70,15 @@ public class UsuarioBO {
     public Usuario login(String login, String senha) {
         try {
             return new UsuarioDAO().login(login, senha);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public List<Usuario> listar() {
+        try {
+            return new UsuarioDAO().listar();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

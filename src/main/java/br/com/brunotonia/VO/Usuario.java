@@ -77,6 +77,11 @@ public class Usuario {
     }
 
     /* JSF */
+
+    @Override
+    public String toString() {
+        return "Usuario "+ nome + " \nLogin " + login /*+ "\nTipo " + tipo.getTipo()*/;
+    }
     
 
 }

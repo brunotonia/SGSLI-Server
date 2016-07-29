@@ -1,4 +1,4 @@
-package br.com.brunotonia.DAO;
+ package br.com.brunotonia.DAO;
 
 import br.com.brunotonia.VO.Repositorio;
 import java.sql.Connection;
@@ -10,9 +10,9 @@ import java.util.List;
 public class RepositorioDAO {
     
     public void adicionar(Repositorio repositorio) throws Exception {
-        String sql = "insert into repositorio "
+        String sql = "INSERT INTO repositorio "
                 + "(\"tipo\", \"url\", \"versao\", \"repositorios\", \"descricao\", \"ativo\")"
-                + " values "
+                + " VALUES "
                 + "(?, ?, ?, ?, ?, ?)";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
@@ -27,7 +27,46 @@ public class RepositorioDAO {
 
         ps.execute();
         ps.close();
-        cnn.commit();
+        //cnn.commit();
+        cnn.close();
+    }
+    
+    public void alterar(Repositorio repositorio) throws Exception {
+        //"UPDATE Messages SET description = ?, author = ? WHERE id = ? AND seq_num = ?"
+        String sql = "UPDATE repositorio SET "
+                + " tipo = ?,"
+                + " url = ?,"
+                + " versao = ?,"
+                + " repositorios = ?,"
+                + " descricao = ?,"
+                + " ativo = ?"
+                + " WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setInt(1, repositorio.getTipo().getId());
+        ps.setString(2, repositorio.getUrl());
+        ps.setString(3, repositorio.getVersao());
+        ps.setString(4, repositorio.getRepositorios());
+        ps.setString(5, repositorio.getDescricao());
+        ps.setBoolean(6, repositorio.getAtivo());
+        ps.setInt(7, repositorio.getId());
+
+        ps.execute();
+        ps.close();
+        cnn.close();
+    }
+    
+    public void excluir(Integer id) throws Exception {
+        String sql = "DELETE FROM repositorio WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        
+        ps.setInt(1, id);
+        ps.execute();
+        
+        ps.close();
         cnn.close();
     }
     

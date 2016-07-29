@@ -17,16 +17,16 @@
                 <p:layout style="min-width:400px; min-height:400px;">
                     <p:layoutUnit position="center" resizable="true"  size="78%">
                     </p:layoutUnit>
-                    <p:layoutUnit position="east" size="20%" >
+                    <p:layoutUnit position="east" size="20%" style="border:0;" >
                         <h:form id="formLogin" >
                             <p:messages id="messages" />
                             <p:panel header="Login" >
-                                <p:panelGrid id="panelAdicionar" columns="2">
+                                <h:panelGrid id="panelAdicionar" columns="2" border="0">
                                     <p:outputLabel for="login" value="Login " />
                                     <p:inputText id="login" value="#{loginBean.login}"/>
                                     <p:outputLabel for="senha" value="Senha " />
-                                    <p:inputText id="senha" value="#{loginBean.senha}"/>
-                                </p:panelGrid>
+                                    <p:password id="senha" value="#{loginBean.senha}"/>
+                                </h:panelGrid>
                                 <p:separator />
                                 <p:commandButton 
                                     icon="fa fa-lock"

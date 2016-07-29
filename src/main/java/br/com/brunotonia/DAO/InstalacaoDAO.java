@@ -10,9 +10,9 @@ import java.util.List;
 public class InstalacaoDAO {
 
     public void adicionar(Instalacao p) throws Exception {
-        String sql = "insert into instalacao "
+        String sql = "INSERT INTO instalacao "
                 + "(\"pacote\", \"ativo\")"
-                + " values "
+                + " VALUES "
                 + "(?, ?)";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
@@ -28,7 +28,7 @@ public class InstalacaoDAO {
     
     public Instalacao selecionar(Integer id) throws Exception {
         Instalacao instalacao = null;
-        String sql = "select * from instalacao where id = ?";
+        String sql = "SELECT * FROM instalacao WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -38,7 +38,7 @@ public class InstalacaoDAO {
 
             instalacao = new Instalacao();
             instalacao.setId(rs.getInt("id"));
-            instalacao.setPacote(new PacotesDAO().selecionar(rs.getString("pacote")));
+            instalacao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
             instalacao.setAtivo(rs.getBoolean("ativo"));
 
         }
@@ -48,8 +48,25 @@ public class InstalacaoDAO {
         return instalacao;
     }
     
+    public void ativarDesativar (Instalacao p) throws Exception {
+        String sql = "UPDATE instalacao SET "
+                + " ativo = ?,"
+                + " WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+
+        ps.setBoolean(1, !p.getAtivo());
+        ps.setInt(2, p.getPacote().getId());
+
+        ps.execute();
+        ps.close();
+        cnn.close();
+    }
+    
+    
     public List<Instalacao> listar() throws Exception {
-        String sql = "select * from instalacao order by id ";
+        String sql = "SELECT * FROM instalacao ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -58,7 +75,7 @@ public class InstalacaoDAO {
         while (rs.next()) {
             Instalacao instalacao = new Instalacao();
             instalacao.setId(rs.getInt("id"));
-            instalacao.setPacote(new PacotesDAO().selecionar(rs.getString("pacote")));
+            instalacao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
             lista.add(instalacao);
         }
         rs.close();
@@ -68,7 +85,7 @@ public class InstalacaoDAO {
     }
     
     public List<Instalacao> listar(Integer id) throws Exception {
-        String sql = "select * from instalacao where id > ? and ativo = ? order by id ";
+        String sql = "SELECT * FROM instalacao WHERE id > ? AND ativo = ? ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -79,7 +96,7 @@ public class InstalacaoDAO {
         while (rs.next()) {
             Instalacao instalacao = new Instalacao();
             instalacao.setId(rs.getInt("id"));
-            instalacao.setPacote(new PacotesDAO().selecionar(rs.getString("pacote")));
+            instalacao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
             lista.add(instalacao);
         }
         rs.close();

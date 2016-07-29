@@ -31,7 +31,7 @@ public class UsuarioDAO {
     
     public void adicionar(Usuario usuario) throws Exception {
         String sql;
-        sql = "insert into usuario "
+        sql = "INSERT INTO usuario "
                 + "(\"tipo\", \"nome\", \"login\", \"senha\", \"ativo\")"
                 + " values "
                 + "(?, ?, ?, ?, ?)";
@@ -51,9 +51,79 @@ public class UsuarioDAO {
         cnn.close();
     }
     
+    public void ativarDesativar (Usuario u) throws Exception {
+        String sql = "UPDATE usuario SET "
+                + " ativo = ?,"
+                + " WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+
+        ps.setBoolean(1, !u.getAtivo());
+        ps.setInt(2, u.getId());
+
+        ps.execute();
+        ps.close();
+        cnn.close();
+    }
+    
+    public void alterar(Usuario usuario) throws Exception {
+        String sql = "UPDATE usuario SET "
+                + " tipo = ?,"
+                + " nome = ?,"
+                + " login = ?,"
+                + " senha = ?,"
+                + " ativo = ?"
+                + " WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+
+        ps.setString(1, usuario.getNome());
+        ps.setString(2, usuario.getLogin());
+        ps.setString(3, usuario.getSenha());
+        ps.setBoolean(4, usuario.getAtivo());
+        ps.setInt(5, usuario.getTipo().getId());
+
+        ps.execute();
+        ps.close();
+        cnn.commit();
+        cnn.close();
+    }
+    
+    public void alterarSenha(Usuario usuario) throws Exception {
+        String sql = "UPDATE usuario SET "
+                + " senha = ?"
+                + " WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        
+        ps.setString(1, usuario.getSenha());
+        ps.setInt(2, usuario.getTipo().getId());
+
+        ps.execute();
+        ps.close();
+        cnn.commit();
+        cnn.close();
+    }
+    
+    public void excluir(Integer id) throws Exception {
+        String sql = "DELETE FROM usuario WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        
+        ps.setInt(1, id);
+        ps.execute();
+        
+        ps.close();
+        cnn.close();
+    }
+    
     public Usuario selecionar(Integer id) throws Exception {
         Usuario usuario = null;
-        String sql = "select * from usuario where id = ?";
+        String sql = "SELECT * FROM usuario WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -64,6 +134,7 @@ public class UsuarioDAO {
             usuario = new Usuario();
             usuario.setId(rs.getInt("id"));
             usuario.setTipo(new UsuarioTipoDAO().selecionar(rs.getInt("tipo")));
+            System.err.println("<<<<<<<<<<<<<<<" + rs.getInt("tipo"));
             usuario.setNome(rs.getString("nome"));
             usuario.setLogin(rs.getString("usuario"));
             usuario.setSenha(rs.getString("senha"));
@@ -78,12 +149,13 @@ public class UsuarioDAO {
     
     public Usuario login(String login, String senha) throws Exception {
         Usuario usuario = null;
-        String sql = "select * from usuario where login = ? and senha = ?";
+        String sql = "SELECT * FROM usuario WHERE login = ? AND senha = ? AND ativo = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, login);
         ps.setString(2, senha);
+        ps.setBoolean(3, true);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             
@@ -91,7 +163,7 @@ public class UsuarioDAO {
             usuario.setId(rs.getInt("id"));
             usuario.setTipo(new UsuarioTipoDAO().selecionar(rs.getInt("tipo")));
             usuario.setNome(rs.getString("nome"));
-            usuario.setLogin(rs.getString("usuario"));
+            usuario.setLogin(rs.getString("login"));
             usuario.setSenha(rs.getString("senha"));
             usuario.setAtivo(rs.getBoolean("ativo"));
             
@@ -103,7 +175,7 @@ public class UsuarioDAO {
     }
     
     public List<Usuario> listar() throws Exception {
-        String sql = "select * from usuario order by id ";
+        String sql = "SELECT * FROM usuario ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);

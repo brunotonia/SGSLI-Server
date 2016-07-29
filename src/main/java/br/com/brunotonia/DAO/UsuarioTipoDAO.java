@@ -31,7 +31,7 @@ public class UsuarioTipoDAO {
     
     public UsuarioTipo selecionar(Integer id) throws Exception {
         UsuarioTipo usrTipo = null;
-        String sql = "select * from usuario_tipo where id = ?";
+        String sql = "SELECT * FROM usuario_tipo WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -49,7 +49,7 @@ public class UsuarioTipoDAO {
     }
     
     public List<UsuarioTipo> listar() throws Exception {
-        String sql = "select * from usuario_tipo order by id ";
+        String sql = "SELECT * FROM usuario_tipo ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);

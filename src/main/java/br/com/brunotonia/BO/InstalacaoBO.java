@@ -23,6 +23,14 @@ public class InstalacaoBO {
         }
     }
     
+    public void ativarDesativar(Instalacao instalacao) {
+        try {
+            new InstalacaoDAO().ativarDesativar(instalacao);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public List<Instalacao> listar() {
         try {
             return new InstalacaoDAO().listar();
