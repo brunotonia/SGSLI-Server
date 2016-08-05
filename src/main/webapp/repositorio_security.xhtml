@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" >
+    <h:head>
+        <title>SGSLI - Gerenciar Repositórios</title>
+        <style type="text/css">
+            .ui-widget,.ui-widget .ui-widget {
+                font-size: 95% !important;
+            }
+        </style>
+    </h:head>
+    <h:body rendered="#{sessionScope.usr ne null}">
+        <!-- Menu -->
+        <h:form id="formMenu" >
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value=" Principal" outcome="principal" icon="fa fa-home" >
+                    <f:param name="i" value="0" />
+                </p:menuitem>
+                <p:menuitem value="Repositórios" outcome="repositorio" icon="fa fa-database">
+                    <f:param name="i" value="1" />
+                </p:menuitem>
+                <p:menuitem value="Instalação" outcome="principal" icon="fa fa-download">
+                    <f:param name="i" value="2" />
+                </p:menuitem>
+                <p:menuitem value="Remoção" outcome="principal" icon="fa fa-remove">
+                    <f:param name="i" value="3" />
+                </p:menuitem>
+                <p:menuitem value="Update" outcome="principal" icon="fa fa-linux">
+                    <f:param name="i" value="4" />
+                </p:menuitem>
+                <p:menuitem value="Usuários" outcome="usuarios" icon="fa fa-users">
+                    <f:param name="i" value="5" />
+                </p:menuitem>
+                <p:menuitem value="Logout" action="#{loginBean.logout()}" icon="fa fa-unlock-alt" />
+            </p:tabMenu>
+        </h:form>
+        <p:spacer width="100" height="10" />
+        <!-- Menu -->
+        <!-- DataTable -->
+        <div align="center">
+            <h:form id="formPrincipal" >
+                <p:panel header="Gerenciar Repositórios de Segurança" style="width: 95%">
+                    <p:spacer width="20" height="20" />
+                    <p:dataTable 
+                        id="tabela"
+                        var="reps" 
+                        rows="10"
+                        paginator="true"
+                        paginatorPosition="bottom"
+                        value="#{repositorioSecurityBean.listaRepositorios}"
+                        rendered="#{not empty repositorioSecurityBean.listaRepositorios}">
+                        <f:facet name="header">Repositórios de Segurança Cadastrados</f:facet>
+                        <p:column style="text-align: center; width: 40%" 
+                                  headerText="Repositorio" 
+                                  sortBy="#{reps.tipo} #{reps.url}#{reps.versao} #{reps.repositorios}">
+                            <h:inputHidden value="#{reps.id}" />
+                            <h:outputText value="#{reps}" />
+                        </p:column>
+                        <p:column style="text-align: center; width: 40%" headerText="Descrição" sortBy="#{reps.descricao}">
+                            <h:outputText value="#{reps.descricao}" />
+                        </p:column>
+                        <p:column style="text-align: center; width: 10%" headerText="Ativo" sortBy="#{reps.ativo}">
+                            <p:selectBooleanCheckbox disabled="true" value="#{reps.ativo}" />
+                        </p:column>
+                        <!-- coluna de ações -->
+                        <p:column style="text-align: center; width: 10%" headerText="Ações">
+                            <!-- botoes na própria linha da coluna -->
+                            <p:commandButton 
+                                icon="fa fa-edit"
+                                title="Editar" 
+                                actionListener="#{repositorioSecurityBean.prepararAdicionar}"
+                                update=":formEditar"
+                                onclick="PF('dialogEditar').show();"
+                                ajax="true"
+                                disabled="#{sessionScope.usr.tipo.id ne 1}">
+                                <f:setPropertyActionListener 
+                                    target="#{repositorioSecurityBean.repositorio}"
+                                    value="#{reps}" />
+                            </p:commandButton>
+                            <p:commandButton 
+                                icon="fa fa-trash"
+                                title="Excluir" 
+                                actionListener="#{repositorioSecurityBean.prepararAdicionar}"
+                                update=":formExcluir"
+                                onclick="PF('dialogExcluir').show();"
+                                ajax="true"
+                                disabled="#{sessionScope.usr.tipo.id ne 1}">
+                                <f:setPropertyActionListener 
+                                    target="#{repositorioSecurityBean.repositorio}"
+                                    value="#{reps}" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <p:spacer width="20" height="20" />
+                    <p:separator />
+                    <p:commandButton 
+                        icon="fa fa-plus"
+                        value="Adicionar" 
+                        actionListener="#{repositorioSecurityBean.prepararAdicionar}"
+                        update="formAdicionar"
+                        onclick="PF('dialogAdicionar').show();"
+                        ajax="true"
+                        disabled="#{sessionScope.usr.tipo.id ne 1}"/>
+                    <p:button 
+                        icon="fa fa-database"
+                        value="Repositórios" 
+                        href="repositorio.xhtml" />
+                     <p:commandButton 
+                        icon="fa fa-file-o"
+                        value="Visualizar sources.list" 
+                        onclick="PF('dialogSources').show();"
+                        ajax="true" />
+                </p:panel>
+            </h:form>
+        </div>
+        <!-- Formulário Adicionar -->
+        <p:dialog 
+            header="Adicionar"
+            widgetVar="dialogAdicionar"
+            modal="true"
+            closeOnEscape="true"
+            resizable="false"
+            height="50%">
+            <h:form id="formAdicionar" >
+                <p:panelGrid id="panelAdicionar" columns="2">
+                    <p:outputLabel value="Tipo " />
+                    <p:selectOneMenu id="tipo" value="#{repositorioSecurityBean.idTipo}">
+                        <f:selectItem itemLabel="deb" itemValue="1" />
+                        <f:selectItem itemLabel="deb-src" itemValue="2" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="url" value="URL " />
+                    <p:inputText id="url" value="#{repositorioSecurityBean.repositorio.url}"/>
+                    <p:outputLabel for="versao" value="Versão " />
+                    <p:inputText id="versao" value="#{repositorioSecurityBean.repositorio.versao}"/>
+                    <p:outputLabel for="repositorios" value="Repositorios " />
+                    <p:inputText id="repositorios" value="#{repositorioSecurityBean.repositorio.repositorios}"/>
+                    <p:outputLabel for="descricao" value="Descrição " />
+                    <p:inputTextarea id="descricao" value="#{repositorioSecurityBean.repositorio.descricao}"/>
+                    <p:outputLabel value="Ativo " />
+                    <p:selectBooleanCheckbox value="#{repositorioSecurityBean.repositorio.ativo}" />
+                </p:panelGrid>
+                <p:separator />
+                <p:commandButton 
+                    icon="fa fa-plus"
+                    value="Adicionar" 
+                    action="#{repositorioSecurityBean.adicionar(actionEvent)}"
+                    update=":formPrincipal:tabela"
+                    oncomplete="dialogAdicionar.hide()"
+                    process="@form"
+                    ajax="false" />
+                <p:commandButton 
+                    icon="fa fa-close"
+                    value="Cancelar"
+                    onsuccess="PF('dialogAdicionar').hide();"
+                    update="formAdicionar"/>
+            </h:form>
+        </p:dialog>   
+        <!-- Formulário Editar -->
+        <p:dialog 
+            header="Editar"
+            widgetVar="dialogEditar"
+            modal="true"
+            closeOnEscape="true"
+            resizable="false"
+            height="50%">
+            <h:form id="formEditar" acceptcharset="UTF-8" >
+                <h:inputHidden value="#{repositorioSecurityBean.repositorio.id}" />
+                <p:panelGrid id="panelAdicionar" columns="2">
+                    <p:outputLabel value="Tipo " />
+                    <p:selectOneMenu id="tipo" value="#{repositorioSecurityBean.idTipo}">
+                        <f:selectItem itemLabel="deb" itemValue="1" />
+                        <f:selectItem itemLabel="deb-src" itemValue="2" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="url" value="URL " />
+                    <p:inputText id="url" value="#{repositorioSecurityBean.repositorio.url}"/>
+                    <p:outputLabel for="versao" value="Versão " />
+                    <p:inputText id="versao" value="#{repositorioSecurityBean.repositorio.versao}"/>
+                    <p:outputLabel for="repositorios" value="Repositorios " />
+                    <p:inputText id="repositorios" value="#{repositorioSecurityBean.repositorio.repositorios}"/>
+                    <p:outputLabel for="descricao" value="Descrição " />
+                    <p:inputTextarea id="descricao" value="#{repositorioSecurityBean.repositorio.descricao}"/>
+                    <p:outputLabel value="Ativo " />
+                    <p:selectBooleanCheckbox value="#{repositorioSecurityBean.repositorio.ativo}" />
+                </p:panelGrid>
+                <p:separator />
+                <p:commandButton 
+                    icon="fa fa-plus"
+                    value="Editar" 
+                    action="#{repositorioSecurityBean.editar(actionEvent)}"
+                    update=":formPrincipal:tabela"
+                    oncomplete="dialogEditar.hide()"
+                    process="@form"
+                    ajax="false" />
+                <p:commandButton 
+                    icon="fa fa-close"
+                    value="Cancelar"
+                    onsuccess="PF('dialogEditar').hide();"
+                    update="formEditar"/>
+            </h:form>
+        </p:dialog> 
+        <!-- Formulário Exclusão -->
+        <p:dialog 
+            header="Excluir"
+            widgetVar="dialogExcluir"
+            modal="true"
+            closeOnEscape="true"
+            resizable="false">
+            <h:form id="formExcluir" >
+                <h:inputHidden value="#{repositorioSecurityBean.repositorio.id}" />
+                <p:outputLabel value="Você gostaria de excluir o #{repositorioSecurityBean.repositorio.tipo} #{repositorioSecurityBean.repositorio.url} #{repositorioSecurityBean.repositorio.versao} #{repositorioSecurityBean.repositorio.repositorios}?" />
+                <p:separator />
+                <p:commandButton 
+                    icon="fa fa-trash"
+                    value="Sim" 
+                    action="#{repositorioSecurityBean.excluir(actionEvent)}"
+                    update="dialogAdicionar"
+                    oncomplete="dialogExcluir.hide()"
+                    process="@form"
+                    ajax="false" />
+                <p:commandButton 
+                    icon="fa fa-close"
+                    value="Não"
+                    onsuccess="PF('dialogExcluir').hide();"
+                    update="formExcluir"/>
+            </h:form>
+        </p:dialog> 
+        <!-- Formulário Sources -->
+        <p:dialog 
+            header="/etc/apt/sources.list"
+            widgetVar="dialogSources"
+            modal="true"
+            closeOnEscape="true"
+            resizable="false"
+            width="60%">
+            <iframe id="iframeCenter" src="client-data/etc/apt/sources.list" width="100%"  
+                        height="50%" frameborder="0">  
+            </iframe>
+        </p:dialog> 
+    </h:body>
+</html>
+
