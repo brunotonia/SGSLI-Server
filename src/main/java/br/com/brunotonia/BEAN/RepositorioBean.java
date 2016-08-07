@@ -100,7 +100,6 @@ public class RepositorioBean {
     }
     
     public void excluir(ActionEvent actionEvent) {
-        System.err.println("excluir");
         new RepositorioBO().excluir(repositorio.getId());
         prepararAdicionar(actionEvent);
     }
