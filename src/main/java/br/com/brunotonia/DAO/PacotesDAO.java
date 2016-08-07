@@ -26,70 +26,98 @@ import java.util.List;
 public class PacotesDAO {
 
     public void adicionar(Pacotes p) throws Exception {
-        String sql = "insert into pacotes "
+        String sql = "INSERT INTO pacotes "
                 + "(\"pacote\", \"versao\", \"dependencias\", \"descricao\", \"categoria\", \"ativo\")"
-                + " values "
-                + "(?, ?, ?, ?, ?, ?)";
+                + " VALUES (?, ?, ?, ?, ?, ?)";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
         ps.setString(1, p.getPacote());
         ps.setString(2, p.getVersao());
         ps.setString(3, p.getDependencias());
         ps.setString(4, p.getDescricao());
         ps.setInt(5, p.getCategoria().getId());
-        ps.setBoolean(6, p.getAtivo());
-
+        ps.setBoolean(6, true);
         ps.execute();
         ps.close();
         cnn.commit();
         cnn.close();
     }
+    
+    public Pacotes atualizar(Pacotes pacote) throws Exception {
+        String sql = "UPDATE pacotes SET" +
+                "versao = ?, dependencias = ?, descricao = ?, ativo = ? " +
+                "WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setString(1, pacote.getVersao());
+        ps.setString(2, pacote.getDependencias());
+        ps.setString(3, pacote.getDescricao());
+        ps.setBoolean(4, true);
+        ps.setInt(5, pacote.getId());
+        ResultSet rs = ps.executeQuery();
+        ps.close();
+        cnn.commit();
+        cnn.close();
+        return pacote;
+    }
 
     public Pacotes selecionar(Integer id) throws Exception {
         Pacotes pacote = null;
-        String sql = "select * from pacotes where id = ?";
+        String sql = "SELECT * FROM pacotes WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-
             pacote = new Pacotes();
             pacote.setId(rs.getInt("id"));
+            pacote.setPacote(rs.getString("pacote"));
             pacote.setVersao(rs.getString("versao"));
             pacote.setDependencias(rs.getString("dependencias"));
             pacote.setDescricao(rs.getString("descricao"));
             pacote.setCategoria(new PacotesCategoriaDAO().selecionar(rs.getInt("categoria")));
             pacote.setAtivo(rs.getBoolean("ativo"));
-
         }
         rs.close();
         ps.close();
         cnn.close();
         return pacote;
     }
+    
+    
+    
+    public void prepararAtualizar() throws Exception {
+        String sql = "UPDATE pacotes SET ativo = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setBoolean(1, false);
+        ResultSet rs = ps.executeQuery();
+        ps.close();
+        cnn.commit();
+        cnn.close();
+    }
 
     public Pacotes selecionar(String nomePacote) throws Exception {
         Pacotes pacote = null;
-        String sql = "select * from pacotes where pacote = ?";
+        String sql = "SELECT * FROM pacotes WHERE pacote = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, nomePacote);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            
             pacote = new Pacotes();
             pacote.setId(rs.getInt("id"));
+            pacote.setPacote(rs.getString("pacote"));
             pacote.setVersao(rs.getString("versao"));
             pacote.setDependencias(rs.getString("dependencias"));
             pacote.setDescricao(rs.getString("descricao"));
             pacote.setCategoria(new PacotesCategoriaDAO().selecionar(rs.getInt("categoria")));
             pacote.setAtivo(rs.getBoolean("ativo"));
-            
         }
         rs.close();
         ps.close();
@@ -98,7 +126,7 @@ public class PacotesDAO {
     }
     
     public List<Pacotes> listar() throws Exception {
-        String sql = "select * from pacotes order by id ";
+        String sql = "SELECT * FROM pacotes ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -107,6 +135,7 @@ public class PacotesDAO {
         while (rs.next()) {
             Pacotes pacote = new Pacotes();
             pacote.setId(rs.getInt("id"));
+            pacote.setPacote(rs.getString("pacote"));
             pacote.setVersao(rs.getString("versao"));
             pacote.setDependencias(rs.getString("dependencias"));
             pacote.setDescricao(rs.getString("descricao"));
@@ -121,16 +150,42 @@ public class PacotesDAO {
     }
     
     public List<Pacotes> listarAtivos() throws Exception {
-        String sql = "select * from pacotes where ativo = \"true\" order by id ";
+        String sql = "SELECT * FROM pacotes WHERE ativo = ? ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setBoolean(1, true);
         ResultSet rs = ps.executeQuery();
         List<Pacotes> lista = new ArrayList<Pacotes>();
         while (rs.next()) {
-            
             Pacotes pacote = new Pacotes();
             pacote.setId(rs.getInt("id"));
+            pacote.setPacote(rs.getString("pacote"));
+            pacote.setVersao(rs.getString("versao"));
+            pacote.setDependencias(rs.getString("dependencias"));
+            pacote.setDescricao(rs.getString("descricao"));
+            pacote.setCategoria(new PacotesCategoriaDAO().selecionar(rs.getInt("categoria")));
+            pacote.setAtivo(rs.getBoolean("ativo"));
+            lista.add(pacote);
+        }
+        rs.close();
+        ps.close();
+        cnn.close();
+        return lista;
+    }
+    
+    public List<Pacotes> listarInativos() throws Exception {
+        String sql = "SELECT * FROM pacotes WHERE ativo = ? ORDER BY id ";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setBoolean(1, false);
+        ResultSet rs = ps.executeQuery();
+        List<Pacotes> lista = new ArrayList<Pacotes>();
+        while (rs.next()) {
+            Pacotes pacote = new Pacotes();
+            pacote.setId(rs.getInt("id"));
+            pacote.setPacote(rs.getString("pacote"));
             pacote.setVersao(rs.getString("versao"));
             pacote.setDependencias(rs.getString("dependencias"));
             pacote.setDescricao(rs.getString("descricao"));
@@ -145,17 +200,22 @@ public class PacotesDAO {
         return lista;
     }
     
-    public List<Pacotes> listarInativos() throws Exception {
-        String sql = "select * from pacotes where ativo = \"false\" order by id ";
+    public List<Pacotes> listarAtivosPorCategoria(Integer idCategoria) throws Exception {
+        String sql = "SELECT * FROM pacotes WHERE ativo = ? AND categoria = ? ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
+        
+        ps.setBoolean(1, true);
+        ps.setInt(2, idCategoria);
+        
         ResultSet rs = ps.executeQuery();
         List<Pacotes> lista = new ArrayList<Pacotes>();
         while (rs.next()) {
             
             Pacotes pacote = new Pacotes();
             pacote.setId(rs.getInt("id"));
+            pacote.setPacote(rs.getString("pacote"));
             pacote.setVersao(rs.getString("versao"));
             pacote.setDependencias(rs.getString("dependencias"));
             pacote.setDescricao(rs.getString("descricao"));
@@ -169,5 +229,6 @@ public class PacotesDAO {
         cnn.close();
         return lista;
     }
+    
 
 }

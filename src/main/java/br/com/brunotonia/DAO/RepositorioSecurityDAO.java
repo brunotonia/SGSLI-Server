@@ -26,9 +26,9 @@ import java.util.List;
 public class RepositorioSecurityDAO {
     
     public void adicionar(RepositorioSecurity repositorio) throws Exception {
-        String sql = "insert into repositorio_security "
+        String sql = "INSERT INTO repositorio_security "
                 + "(\"tipo\", \"url\", \"versao\", \"repositorios\", \"descricao\", \"ativo\")"
-                + " values "
+                + " VALUES "
                 + "(?, ?, ?, ?, ?, ?)";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
@@ -47,9 +47,48 @@ public class RepositorioSecurityDAO {
         cnn.close();
     }
     
+    public void alterar(RepositorioSecurity repositorio) throws Exception {
+        //"UPDATE Messages SET description = ?, author = ? WHERE id = ? AND seq_num = ?"
+        String sql = "UPDATE repositorio_security SET "
+                + " tipo = ?,"
+                + " url = ?,"
+                + " versao = ?,"
+                + " repositorios = ?,"
+                + " descricao = ?,"
+                + " ativo = ?"
+                + " WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setInt(1, repositorio.getTipo().getId());
+        ps.setString(2, repositorio.getUrl());
+        ps.setString(3, repositorio.getVersao());
+        ps.setString(4, repositorio.getRepositorios());
+        ps.setString(5, repositorio.getDescricao());
+        ps.setBoolean(6, repositorio.getAtivo());
+        ps.setInt(7, repositorio.getId());
+
+        ps.execute();
+        ps.close();
+        cnn.close();
+    }
+    
+    public void excluir(Integer id) throws Exception {
+        String sql = "DELETE FROM repositorio_security WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        
+        ps.setInt(1, id);
+        ps.execute();
+        
+        ps.close();
+        cnn.close();
+    }
+    
     public RepositorioSecurity selecionar(Integer id) throws Exception {
         RepositorioSecurity repositorio = null;
-        String sql = "select * from repositorio_security where id = ?";
+        String sql = "SELECT * FROM repositorio_security WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -74,7 +113,7 @@ public class RepositorioSecurityDAO {
     }
     
     public List<RepositorioSecurity> listar() throws Exception {
-        String sql = "select * from repositorio_security order by id ";
+        String sql = "SELECT * FROM repositorio_security ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -100,7 +139,7 @@ public class RepositorioSecurityDAO {
     }
     
     public List<RepositorioSecurity> listarAtivos() throws Exception {
-        String sql = "select * from repositorio_security where ativo = ? order by id ";
+        String sql = "SELECT * FROM repositorio_security WHERE ativo = ? ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -126,7 +165,7 @@ public class RepositorioSecurityDAO {
     }
     
     public List<RepositorioSecurity> listarInativos() throws Exception {
-        String sql = "select * from repositorio_security where ativo = ? order by id ";
+        String sql = "SELECT * FROM repositorio_security WHERE ativo = ? ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);

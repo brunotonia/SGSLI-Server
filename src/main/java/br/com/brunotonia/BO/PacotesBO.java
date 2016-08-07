@@ -30,6 +30,22 @@ public class PacotesBO {
         }
     }
     
+    public void atualizar(Pacotes pacote) {
+        try {
+            new PacotesDAO().atualizar(pacote);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void prepararAtualizar() {
+        try {
+            new PacotesDAO().prepararAtualizar();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public Pacotes selecionar(Integer id) {
         try {
             return new PacotesDAO().selecionar(id);
@@ -51,6 +67,15 @@ public class PacotesBO {
     public List<Pacotes> listar() {
         try {
             return new PacotesDAO().listar();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public List<Pacotes> listarAtivosPorCategoria(Integer categoria) {
+        try {
+            return new PacotesDAO().listarAtivosPorCategoria(categoria);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

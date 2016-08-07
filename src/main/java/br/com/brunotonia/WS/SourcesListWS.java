@@ -42,11 +42,13 @@ public class SourcesListWS {
         if (lista.isEmpty() || versao == null) {
             return "ERRO";
         } else {
-            String resultado = "#SGSLI - Gerado automaticamente.\n#Versão " + versao.getSources().toString() + "\n\n";
+            String resultado = "#Gerado automaticamente pelo SGSLI.\n#Versão " +
+                    versao.getSources().toString() + "\n\n" +
+                    "#Repositórios\n";
             for (Repositorio repositorio : lista) {
                 resultado += repositorio.toString() + " \n";
             }
-            resultado += "\n";
+            resultado += "\n#Repositórios de Atualizações de Segurança\n";
             RepositorioSecurityBO repositorioSecurityBO = new RepositorioSecurityBO();
             List<RepositorioSecurity> listaSecurity = repositorioSecurityBO.listarAtivos();
             for (RepositorioSecurity repositorio : listaSecurity) {

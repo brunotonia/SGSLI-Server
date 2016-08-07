@@ -84,7 +84,10 @@ public class Pacotes {
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return pacote;
+    }
 
 }

@@ -39,9 +39,10 @@ public class InstalacaoDAO {
 
         ps.execute();
         ps.close();
+        cnn.commit();
         cnn.close();
     }
-    
+
     public Instalacao selecionar(Integer id) throws Exception {
         Instalacao instalacao = null;
         String sql = "SELECT * FROM instalacao WHERE id = ?";
@@ -63,24 +64,22 @@ public class InstalacaoDAO {
         cnn.close();
         return instalacao;
     }
-    
-    public void ativarDesativar (Instalacao p) throws Exception {
+
+    public void ativarDesativar(Instalacao i) throws Exception {
         String sql = "UPDATE instalacao SET "
-                + " ativo = ?,"
+                + " ativo = ? "
                 + " WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
-        ps.setBoolean(1, !p.getAtivo());
-        ps.setInt(2, p.getPacote().getId());
-
+        ps.setBoolean(1, !i.getAtivo());
+        ps.setInt(2, i.getPacote().getId());
         ps.execute();
         ps.close();
+        cnn.commit();
         cnn.close();
-    }
-    
-    
+    } 
+
     public List<Instalacao> listar() throws Exception {
         String sql = "SELECT * FROM instalacao ORDER BY id ";
         Conexoes cnx = new Conexoes();
@@ -92,6 +91,7 @@ public class InstalacaoDAO {
             Instalacao instalacao = new Instalacao();
             instalacao.setId(rs.getInt("id"));
             instalacao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
+            instalacao.setAtivo(rs.getBoolean("ativo"));
             lista.add(instalacao);
         }
         rs.close();
@@ -99,7 +99,7 @@ public class InstalacaoDAO {
         cnn.close();
         return lista;
     }
-    
+
     public List<Instalacao> listar(Integer id) throws Exception {
         String sql = "SELECT * FROM instalacao WHERE id > ? AND ativo = ? ORDER BY id ";
         Conexoes cnx = new Conexoes();
@@ -113,6 +113,7 @@ public class InstalacaoDAO {
             Instalacao instalacao = new Instalacao();
             instalacao.setId(rs.getInt("id"));
             instalacao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
+            instalacao.setAtivo(rs.getBoolean("ativo"));
             lista.add(instalacao);
         }
         rs.close();

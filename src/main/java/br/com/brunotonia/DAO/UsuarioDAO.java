@@ -23,10 +23,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author bruno
- */
 public class UsuarioDAO {
     
     public void adicionar(Usuario usuario) throws Exception {
@@ -38,36 +34,19 @@ public class UsuarioDAO {
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
         ps.setInt(1, usuario.getTipo().getId());
         ps.setString(2, usuario.getNome());
         ps.setString(3, usuario.getLogin());
         ps.setString(4, usuario.getSenha());
         ps.setBoolean(5, usuario.getAtivo());
-
         ps.execute();
         ps.close();
         cnn.commit();
         cnn.close();
     }
     
-    public void ativarDesativar (Usuario u) throws Exception {
-        String sql = "UPDATE usuario SET "
-                + " ativo = ?,"
-                + " WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
-        PreparedStatement ps = cnn.prepareStatement(sql);
-
-        ps.setBoolean(1, !u.getAtivo());
-        ps.setInt(2, u.getId());
-
-        ps.execute();
-        ps.close();
-        cnn.close();
-    }
-    
-    public void alterar(Usuario usuario) throws Exception {
+    public void editar(Usuario usuario) throws Exception {
+        //"UPDATE Messages SET description = ?, author = ? WHERE id = ?"
         String sql = "UPDATE usuario SET "
                 + " tipo = ?,"
                 + " nome = ?,"
@@ -78,30 +57,36 @@ public class UsuarioDAO {
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
-        ps.setString(1, usuario.getNome());
-        ps.setString(2, usuario.getLogin());
-        ps.setString(3, usuario.getSenha());
-        ps.setBoolean(4, usuario.getAtivo());
-        ps.setInt(5, usuario.getTipo().getId());
-
+        ps.setInt(1, usuario.getTipo().getId());
+        ps.setString(2, usuario.getNome());
+        ps.setString(3, usuario.getLogin());
+        ps.setString(4, usuario.getSenha());
+        ps.setBoolean(5, usuario.getAtivo());
+        ps.setInt(6, usuario.getId());
         ps.execute();
         ps.close();
-        cnn.commit();
+        cnn.close();
+    }
+    
+    public void ativarDesativar (Usuario u) throws Exception {
+        String sql = "UPDATE usuario SET ativo = ?, WHERE id = ?";
+        Conexoes cnx = new Conexoes();
+        Connection cnn = cnx.getConexao();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setBoolean(1, !u.getAtivo());
+        ps.setInt(2, u.getId());
+        ps.execute();
+        ps.close();
         cnn.close();
     }
     
     public void alterarSenha(Usuario usuario) throws Exception {
-        String sql = "UPDATE usuario SET "
-                + " senha = ?"
-                + " WHERE id = ?";
+        String sql = "UPDATE usuario SET senha = ? WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-        
         ps.setString(1, usuario.getSenha());
         ps.setInt(2, usuario.getTipo().getId());
-
         ps.execute();
         ps.close();
         cnn.commit();
@@ -113,10 +98,8 @@ public class UsuarioDAO {
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-        
         ps.setInt(1, id);
         ps.execute();
-        
         ps.close();
         cnn.close();
     }
@@ -130,16 +113,13 @@ public class UsuarioDAO {
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            
             usuario = new Usuario();
             usuario.setId(rs.getInt("id"));
             usuario.setTipo(new UsuarioTipoDAO().selecionar(rs.getInt("tipo")));
-            System.err.println("<<<<<<<<<<<<<<<" + rs.getInt("tipo"));
             usuario.setNome(rs.getString("nome"));
-            usuario.setLogin(rs.getString("usuario"));
+            usuario.setLogin(rs.getString("login"));
             usuario.setSenha(rs.getString("senha"));
             usuario.setAtivo(rs.getBoolean("ativo"));
-            
         }
         rs.close();
         ps.close();
@@ -157,16 +137,14 @@ public class UsuarioDAO {
         ps.setString(2, senha);
         ps.setBoolean(3, true);
         ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            
+        if (rs.next()) {          
             usuario = new Usuario();
             usuario.setId(rs.getInt("id"));
             usuario.setTipo(new UsuarioTipoDAO().selecionar(rs.getInt("tipo")));
             usuario.setNome(rs.getString("nome"));
             usuario.setLogin(rs.getString("login"));
-            usuario.setSenha(rs.getString("senha"));
+            usuario.setSenha("");
             usuario.setAtivo(rs.getBoolean("ativo"));
-            
         }
         rs.close();
         ps.close();
@@ -182,15 +160,13 @@ public class UsuarioDAO {
         ResultSet rs = ps.executeQuery();
         List<Usuario> lista = new ArrayList<Usuario>();
         while (rs.next()) {
-            
             Usuario usuario = new Usuario();
             usuario.setId(rs.getInt("id"));
             usuario.setTipo(new UsuarioTipoDAO().selecionar(rs.getInt("tipo")));
             usuario.setNome(rs.getString("nome"));
-            usuario.setLogin(rs.getString("usuario"));
+            usuario.setLogin(rs.getString("login"));
             usuario.setSenha(rs.getString("senha"));
             usuario.setAtivo(rs.getBoolean("ativo"));
-            
             lista.add(usuario);
         }
         rs.close();

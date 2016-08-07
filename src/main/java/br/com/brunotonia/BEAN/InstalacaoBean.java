@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Roberto Vasconcelos Tonia
+ * Copyright (C) 2016 bruno
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,10 @@
 package br.com.brunotonia.BEAN;
 
 import br.com.brunotonia.BO.InstalacaoBO;
+import br.com.brunotonia.BO.PacotesBO;
+import br.com.brunotonia.BO.PacotesCategoriaBO;
 import br.com.brunotonia.VO.Instalacao;
+import br.com.brunotonia.VO.Pacotes;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -25,43 +28,97 @@ import javax.faces.event.ActionEvent;
 @ManagedBean(name = "instalacaoBean")
 public class InstalacaoBean {
     
-    private Instalacao instalacao = new Instalacao();
-    private List<Instalacao> listaInstalacao = new InstalacaoBO().listar();
+    private Instalacao instalacao;
+    private Pacotes pacote;
+    private List listaInstalacao;
+    private List listaPacotes;
+    private List listaCategorias;
+    private Integer idCategoria;
 
     public InstalacaoBean() {
         this.instalacao = new Instalacao();
+        this.pacote = new Pacotes();
         this.listaInstalacao = new InstalacaoBO().listar();
     }
 
-    public Instalacao getUsuario() {
+    public Instalacao getInstalacao() {
         return instalacao;
     }
 
-    public void setUsuario(Instalacao instalacao) {
+    public void setInstalacao(Instalacao instalacao) {
         this.instalacao = instalacao;
     }
 
-    public List<Instalacao> getListaUsuarios() {
+    public Pacotes getPacote() {
+        return pacote;
+    }
+
+    public void setPacote(Pacotes pacote) {
+        this.pacote = pacote;
+    }
+
+    public List getListaInstalacao() {
         return listaInstalacao;
     }
 
-    public void setListaUsuarios(List<Instalacao> listaInstalacao) {
+    public void setListaInstalacao(List listaInstalacao) {
         this.listaInstalacao = listaInstalacao;
     }
-    
-    public void prepararAdicionar(ActionEvent actionEvent) {
+
+    public List getListaPacotes() {
+        return listaPacotes;
+    }
+
+    public void setListaPacotes(List listaPacotes) {
+        this.listaPacotes = listaPacotes;
+    }
+
+    public List getListaCategorias() {
+        return listaCategorias;
+    }
+
+    public void setListaCategorias(List listaCategorias) {
+        this.listaCategorias = listaCategorias;
+    }
+
+    public Integer getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Integer idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public void preparar(ActionEvent actionEvent) {
         this.instalacao = new Instalacao();
         this.listaInstalacao = new InstalacaoBO().listar();
     }
     
-    public void adicionar(ActionEvent actionEvent) {
-        new InstalacaoBO().adicionar(instalacao);
-        prepararAdicionar(actionEvent);
+    public void ativarDesativar(ActionEvent actionEvent) {
+        System.out.println("Ativar ou Desativar");
+        new InstalacaoBO().ativarDesativar(new InstalacaoBO().selecionar(instalacao.getId()));
+        
+        
+        /*System.out.println(instalacao.getId());
+        System.out.println(instalacao.getPacote());
+        System.out.println(instalacao.getAtivo());
+        */
+        preparar(actionEvent);
     }
     
-    public void ativarDesativar(ActionEvent actionEvent) {
-        System.err.println("excluir");
-        new InstalacaoBO().ativarDesativar(instalacao);
-        prepararAdicionar(actionEvent);
+    public void prepararAdicionar(ActionEvent actionEvent) {
+        this.listaCategorias = new PacotesCategoriaBO().listar();
+        this.listaPacotes = new PacotesBO().listarAtivos();
+        this.listaInstalacao = new InstalacaoBO().listar();
     }
+    
+    public void listarPacotes(ActionEvent actionEvent) {
+        if (idCategoria == 0) {
+            this.listaPacotes = new PacotesBO().listarAtivos();
+        } else {
+            this.listaPacotes = new PacotesBO().listarAtivosPorCategoria(idCategoria);
+        }   
+    }
+    
+    
 }

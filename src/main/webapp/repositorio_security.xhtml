@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui" >
     <h:head>
-        <title>SGSLI - Gerenciar Repositórios</title>
+        <title>SGSLI - Gerenciar Repositórios de Segurança</title>
         <style type="text/css">
             .ui-widget,.ui-widget .ui-widget {
                 font-size: 95% !important;
@@ -22,7 +22,7 @@
                 <p:menuitem value="Repositórios" outcome="repositorio" icon="fa fa-database">
                     <f:param name="i" value="1" />
                 </p:menuitem>
-                <p:menuitem value="Instalação" outcome="principal" icon="fa fa-download">
+                <p:menuitem value="Instalação" outcome="instalacao" icon="fa fa-download">
                     <f:param name="i" value="2" />
                 </p:menuitem>
                 <p:menuitem value="Remoção" outcome="principal" icon="fa fa-remove">
@@ -51,15 +51,15 @@
                         paginator="true"
                         paginatorPosition="bottom"
                         value="#{repositorioSecurityBean.listaRepositorios}"
-                        rendered="#{not empty repositorioSecurityBean.listaRepositorios}">
+                        emptyMessage="Nenhum repositório encontrado.">
                         <f:facet name="header">Repositórios de Segurança Cadastrados</f:facet>
-                        <p:column style="text-align: center; width: 40%" 
+                        <p:column style="text-align: center; width: 50%" 
                                   headerText="Repositorio" 
                                   sortBy="#{reps.tipo} #{reps.url}#{reps.versao} #{reps.repositorios}">
                             <h:inputHidden value="#{reps.id}" />
                             <h:outputText value="#{reps}" />
                         </p:column>
-                        <p:column style="text-align: center; width: 40%" headerText="Descrição" sortBy="#{reps.descricao}">
+                        <p:column style="text-align: center; width: 30%" headerText="Descrição" sortBy="#{reps.descricao}">
                             <h:outputText value="#{reps.descricao}" />
                         </p:column>
                         <p:column style="text-align: center; width: 10%" headerText="Ativo" sortBy="#{reps.ativo}">
@@ -107,8 +107,8 @@
                     <p:button 
                         icon="fa fa-database"
                         value="Repositórios" 
-                        href="repositorio.xhtml" />
-                     <p:commandButton 
+                        href="repositorio.xhtml?i=1" />
+                    <p:commandButton 
                         icon="fa fa-file-o"
                         value="Visualizar sources.list" 
                         onclick="PF('dialogSources').show();"
@@ -236,9 +236,32 @@
             resizable="false"
             width="60%">
             <iframe id="iframeCenter" src="client-data/etc/apt/sources.list" width="100%"  
-                        height="50%" frameborder="0">  
+                    height="100%" frameborder="0">  
             </iframe>
+            <p:commandButton 
+                icon="fa fa-close"
+                value="Fechar"
+                onsuccess="PF('dialogSources').hide();" />
         </p:dialog> 
+    </h:body>
+    <h:body rendered="#{sessionScope.usr eq null}">
+        <h:form id="formLogin" >
+            <p:messages id="messages" />
+            <p:panel header="Login" >
+                <h:panelGrid id="panelAdicionar" columns="2" border="0" width="20%">
+                    <p:outputLabel for="login" value="Login " />
+                    <p:inputText id="login" value="#{loginBean.login}"/>
+                    <p:outputLabel for="senha" value="Senha " />
+                    <p:password id="senha" value="#{loginBean.senha}"/>
+                </h:panelGrid>
+                <p:separator />
+                <p:commandButton 
+                    icon="fa fa-lock"
+                    value="Login" 
+                    action="#{loginBean.login()}" 
+                    ajax="false" />
+            </p:panel>
+        </h:form>
     </h:body>
 </html>
 

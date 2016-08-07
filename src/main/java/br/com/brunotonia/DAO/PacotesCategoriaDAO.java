@@ -26,29 +26,27 @@ import java.util.List;
 public class PacotesCategoriaDAO {
 
     public void adicionar(PacotesCategoria p) throws Exception {
-        String sql = "insert into pacotes_categoria (\"categoria\") values (?)";
+        String sql = "INSERT INTO pacotes_categoria (\"categoria\") VALUES (?)";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-        ps.setString(1, p.getCategoria().toLowerCase());
+        ps.setString(1, p.getCategoria());
         ps.execute();
         ps.close();
-        cnn.commit();
+        cnn.commit();        
         cnn.close();
     }
 
     public PacotesCategoria selecionar(Integer id) throws Exception {
         PacotesCategoria pctCategoria = null;
-        String sql = "select * from pacotes_categoria where id = ?";
+        String sql = "SELECT * FROM pacotes_categoria WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            pctCategoria = new PacotesCategoria();
-            pctCategoria.setId(rs.getInt("id"));
-            pctCategoria.setCategoria(rs.getString("categoria"));
+            pctCategoria = new PacotesCategoria(rs.getInt("id"), rs.getString("categoria"));
         }
         rs.close();
         ps.close();
@@ -58,16 +56,14 @@ public class PacotesCategoriaDAO {
 
     public PacotesCategoria selecionar(String categoria) throws Exception {
         PacotesCategoria pctCategoria = null;
-        String sql = "select * from pacotes_categoria where categoria = ?";
+        String sql = "SELECT * FROM pacotes_categoria WHERE categoria = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-        ps.setString(1, categoria);
+        ps.setString(1, categoria.toLowerCase());
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            pctCategoria = new PacotesCategoria();
-            pctCategoria.setId(rs.getInt("id"));
-            pctCategoria.setCategoria(rs.getString("categoria"));
+            pctCategoria = new PacotesCategoria(rs.getInt("id"), rs.getString("categoria"));
         }
         rs.close();
         ps.close();
@@ -76,16 +72,14 @@ public class PacotesCategoriaDAO {
     }
 
     public List<PacotesCategoria> listar() throws Exception {
-        String sql = "select * from pacotes_categoria order by id ";
+        String sql = "SELECT * FROM pacotes_categoria ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<PacotesCategoria> lista = new ArrayList<PacotesCategoria>();
         while (rs.next()) {
-            PacotesCategoria p = new PacotesCategoria();
-            p.setId(rs.getInt("id"));
-            p.setCategoria(rs.getString("categoria"));
+            PacotesCategoria p = new PacotesCategoria(rs.getInt("id"), rs.getString("categoria"));
             lista.add(p);
         }
         rs.close();

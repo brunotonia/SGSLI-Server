@@ -90,18 +90,14 @@ public class PacotesUtil {
                         categoria = pacotesCategoriaBO.selecionar(valor);
                     }
                     pacote.setCategoria(categoria);
-                    // Deixa pacote ativo!
-                    pacote.setAtivo(true);
+                    categoria = null;
                     // Armazena pacote
                     if (pacote.getId() == null) {
-                        // Pacote não existe - Cria
+                        // Pacote não existe: Adiciona
                         pacotesBO.adicionar(pacote);
                     } else {
-                        try {
-                            //pacotesBO.atualizar(pacote);
-                        } catch (Exception ex) {
-                            Logger.getLogger(ArquivoUtil.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        // Pacote existe: Atualiza
+                        pacotesBO.atualizar(pacote);
                     }
                 }
                 linha = br.readLine();
@@ -116,8 +112,7 @@ public class PacotesUtil {
 
     public void processarListaDePacotes() {
         List<String> lista_url = new RepositorioUtil().listarURLsPacotes();
-        //PacotesBO pacotesBO = new PacotesBO();
-        //pacotesBO.prepararAtualizacaoPacotes();
+        new PacotesBO().prepararAtualizar();
         for (String url : lista_url) {
             ArquivoUtil au = new ArquivoUtil();
             lerPacotes(au.descompactarArquivoXZ(au.downloadArquivo(url)));

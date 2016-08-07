@@ -5,6 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui" >
     <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>SGSLI - Gerenciar Repositórios</title>
         <style type="text/css">
             .ui-widget,.ui-widget .ui-widget {
@@ -12,7 +13,7 @@
             }
         </style>
     </h:head>
-    <h:body rendered="#{sessionScope.usr ne null}">
+    <h:body rendered="#{sessionScope.usr ne null}" >
         <!-- Menu -->
         <h:form id="formMenu" >
             <p:tabMenu activeIndex="#{param.i}">
@@ -22,7 +23,7 @@
                 <p:menuitem value="Repositórios" outcome="repositorio" icon="fa fa-database">
                     <f:param name="i" value="1" />
                 </p:menuitem>
-                <p:menuitem value="Instalação" outcome="principal" icon="fa fa-download">
+                <p:menuitem value="Instalação" outcome="instalacao" icon="fa fa-download">
                     <f:param name="i" value="2" />
                 </p:menuitem>
                 <p:menuitem value="Remoção" outcome="principal" icon="fa fa-remove">
@@ -51,8 +52,7 @@
                         paginator="true"
                         paginatorPosition="bottom"
                         value="#{repositorioBean.listaRepositorios}"
-                        rendered="#{not empty repositorioBean.listaRepositorios}">
-
+                        emptyMessage="Nenhum repositório encontrado.">
                         <f:facet name="header">Repositórios Cadastrados</f:facet>
                         <p:column style="text-align: center; width: 40%" 
                                   headerText="Repositorio" 
@@ -75,7 +75,8 @@
                                 actionListener="#{repositorioBean.prepararAdicionar}"
                                 update=":formEditar"
                                 onclick="PF('dialogEditar').show();"
-                                ajax="true">
+                                ajax="true"
+                                disabled="#{sessionScope.usr.tipo.id ne 1}">
                                 <f:setPropertyActionListener 
                                     target="#{repositorioBean.repositorio}"
                                     value="#{reps}" />
@@ -86,7 +87,8 @@
                                 actionListener="#{repositorioBean.prepararAdicionar}"
                                 update=":formExcluir"
                                 onclick="PF('dialogExcluir').show();"
-                                ajax="true">
+                                ajax="true"
+                                disabled="#{sessionScope.usr.tipo.id ne 1}">
                                 <f:setPropertyActionListener 
                                     target="#{repositorioBean.repositorio}"
                                     value="#{reps}" />
@@ -101,9 +103,18 @@
                         actionListener="#{repositorioBean.prepararAdicionar}"
                         update="formAdicionar"
                         onclick="PF('dialogAdicionar').show();"
-                        ajax="true"/>
+                        ajax="true"
+                        disabled="#{sessionScope.usr.tipo.id ne 1}"/>
+                    <p:button 
+                        icon="fa fa-database"
+                        value="Repositórios de Segurança" 
+                        href="repositorio_security.xhtml?i=1" />
+                    <p:commandButton 
+                        icon="fa fa-file-o"
+                        value="Visualizar sources.list" 
+                        onclick="PF('dialogSources').show();"
+                        ajax="true" />
                 </p:panel>
-
             </h:form>
         </div>
         <!-- Formulário Adicionar -->
@@ -114,7 +125,7 @@
             closeOnEscape="true"
             resizable="false"
             height="50%">
-            <h:form id="formAdicionar" >
+            <h:form id="formAdicionar" acceptcharset="UTF-8" enctype="application/form-data" >
                 <p:panelGrid id="panelAdicionar" columns="2">
                     <p:outputLabel value="Tipo " />
                     <p:selectOneMenu id="tipo" value="#{repositorioBean.idTipo}">
@@ -156,7 +167,7 @@
             closeOnEscape="true"
             resizable="false"
             height="50%">
-            <h:form id="formEditar" acceptcharset="UTF-8" >
+            <h:form id="formEditar" acceptcharset="UTF-8" enctype="application/form-data" >
                 <h:inputHidden value="#{repositorioBean.repositorio.id}" />
                 <p:panelGrid id="panelAdicionar" columns="2">
                     <p:outputLabel value="Tipo " />
@@ -217,9 +228,22 @@
                     update="formExcluir"/>
             </h:form>
         </p:dialog> 
-
-
-
+        <!-- Formulário Sources -->
+        <p:dialog 
+            header="/etc/apt/sources.list"
+            widgetVar="dialogSources"
+            modal="true"
+            closeOnEscape="true"
+            resizable="false"
+            width="60%">
+            <iframe id="iframeCenter" src="client-data/etc/apt/sources.list" width="100%"  
+                        height="50%" frameborder="0">  
+            </iframe>
+            <p:commandButton 
+                    icon="fa fa-close"
+                    value="Fechar"
+                    onsuccess="PF('dialogSources').hide();" />
+        </p:dialog> 
     </h:body>
 </html>
 

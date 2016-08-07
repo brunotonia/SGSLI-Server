@@ -36,7 +36,7 @@ public class UsuarioBO {
     
     public void alterar(Usuario usuario) {
         try {
-            new UsuarioDAO().alterar(usuario);
+            new UsuarioDAO().editar(usuario);
         } catch (Exception e) {
             e.printStackTrace();
         }

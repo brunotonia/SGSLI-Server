@@ -25,6 +25,36 @@ public class RepositorioSecurityBO {
     public RepositorioSecurityBO() {
     }
     
+    public Boolean adicionar(RepositorioSecurity repositorio) {
+        try {
+            new RepositorioSecurityDAO().adicionar(repositorio);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public Boolean alterar(RepositorioSecurity repositorio) {
+        try {
+            new RepositorioSecurityDAO().alterar(repositorio);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public Boolean excluir(Integer id) {
+        try {
+            new RepositorioSecurityDAO().excluir(id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public RepositorioSecurity selecionar(Integer id) {
         try {
             return new RepositorioSecurityDAO().selecionar(id);

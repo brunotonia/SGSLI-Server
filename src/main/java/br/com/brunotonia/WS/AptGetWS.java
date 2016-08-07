@@ -19,6 +19,8 @@ package br.com.brunotonia.WS;
 import br.com.brunotonia.BO.InstalacaoBO;
 import br.com.brunotonia.BO.RemocaoBO;
 import br.com.brunotonia.BO.VersaoBO;
+import br.com.brunotonia.UTIL.PacotesUtil;
+import br.com.brunotonia.UTIL.RepositorioUtil;
 import br.com.brunotonia.VO.Instalacao;
 import br.com.brunotonia.VO.Remocao;
 import br.com.brunotonia.VO.Versao;
@@ -32,7 +34,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/apt-get")
 public class AptGetWS {
     
-    /*@Path("/update")
+    @Path("/update")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String atualizarListaPacotes() {
@@ -40,9 +42,9 @@ public class AptGetWS {
         new PacotesUtil().processarListaDePacotes();
         long tempoTotal = (System.currentTimeMillis() - tempoInicial) / 1000;
         return "Tempo de execução: " + tempoTotal + " segundos";
-    }*/
+    }
 
-    /*@Path("/update/URLs")
+    @Path("/update/URLs")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String exibirListaURLs() {
@@ -51,7 +53,7 @@ public class AptGetWS {
             aux += s + "\n";
         }
         return aux;
-    }*/
+    }
     
     @Path("/update/versao")
     @GET

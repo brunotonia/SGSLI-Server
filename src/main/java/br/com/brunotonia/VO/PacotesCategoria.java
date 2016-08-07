@@ -27,6 +27,11 @@ public class PacotesCategoria {
     public PacotesCategoria(String categoria) {
         this.categoria = categoria;
     }
+    
+    public PacotesCategoria(Integer id, String categoria) {
+        this.id = id;
+        this.categoria = categoria;
+    }
 
     public Integer getId() {
         return id;

@@ -29,8 +29,10 @@ INSERT INTO usuario_tipo(tipo) VALUES ('Professor');
 INSERT INTO usuario_tipo(tipo) VALUES ('Estagiário');
 
 CREATE TABLE usuario(id serial PRIMARY KEY, tipo INTEGER NOT NULL, nome VARCHAR(100) NOT NULL, login VARCHAR(100) NOT NULL UNIQUE, senha VARCHAR(100) NOT NULL, ativo BOOLEAN NOT NULL, CONSTRAINT fk_usuario_tipo FOREIGN KEY(tipo) REFERENCES usuario_tipo(id));
-
 INSERT INTO usuario (tipo, nome, login, senha, ativo) VALUES (1, 'Bruno Roberto Vasconcelos Tonia', 'bruno', 'bruno', true);
+INSERT INTO usuario (tipo, nome, login, senha, ativo) VALUES (1, 'Administrador', 'administrador', 'administrador', true);
+INSERT INTO usuario (tipo, nome, login, senha, ativo) VALUES (1, 'Professor', 'professor', 'professor', true);
+INSERT INTO usuario (tipo, nome, login, senha, ativo) VALUES (1, 'Estagiário', 'estagiario', 'estagiario', true);
 
 /* Tabelas repositorio, repositorio_security e repositorio_tipo */
 CREATE TABLE repositorio_tipo(id serial PRIMARY KEY, tipo VARCHAR(10) NOT NULL UNIQUE);
@@ -64,29 +66,7 @@ INSERT INTO repositorio_security (tipo, url, versao, repositorios, descricao, at
 
 /* Tabelas pacotes_categoria */
 CREATE TABLE pacotes_categoria(id serial PRIMARY KEY, categoria TEXT NOT NULL UNIQUE);
-
 CREATE TABLE pacotes (id serial PRIMARY KEY, pacote TEXT NOT NULL UNIQUE, categoria INTEGER NOT NULL, versao TEXT, dependencias TEXT,  descricao TEXT, ativo BOOLEAN NOT NULL, CONSTRAINT fk_pacotes_categoria FOREIGN KEY(categoria) REFERENCES pacotes_categoria(id));
-/*CREATE TABLE pacotes (id serial PRIMARY KEY, pacote TEXT NOT NULL, categoria INTEGER,  descricao TEXT, CONSTRAINT fk_pacotes_categoria FOREIGN KEY(categoria) REFERENCES pacotes_categoria(id));*/
-/*CREATE TABLE pacotes (id serial PRIMARY KEY, pacote TEXT NOT NULL, categoria TEXT, versao TEXT, dependencias TEXT,  descricao TEXT);*/
-
-/* CRIAR UMA FUNÇÃO E UM TRIGER DA TABELA PACOTES POVOANDO A TABELA PACOTES_CATEGORIA!!!! */
-/*CREATE FUNCTION categorias() RETURNS TRIGGER AS $$
-	DECLARE
-	categ pacotes.categoria%TYPE;
-	aux   pacotes.categoria%TYPE;
-	BEGIN
-		FOR categ IN SELECT DISTINCT categoria FROM pacotes LOOP
-			SELECT DISTINCT categoria INTO aux from pacotes_categoria WHERE categoria = categ;
-			IF aux IS NULL THEN
-				INSERT INTO pacotes_categoria (categoria) VALUES (categ);
-			END IF;
-		END LOOP;
-		RETURN new;
-	END;
-$$ LANGUAGE 'plpgsql';
-
-CREATE TRIGGER tr_categorias AFTER INSERT OR UPDATE ON pacotes EXECUTE PROCEDURE categorias();
-*/
 
 /* Tabelas instalacao e remocao */
 CREATE TABLE instalacao (id serial PRIMARY KEY, pacote INTEGER NOT NULL, ativo BOOLEAN NOT NULL, CONSTRAINT fk_pacotes FOREIGN KEY(pacote) REFERENCES pacotes(id));

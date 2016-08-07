@@ -33,22 +33,18 @@ public class RepositorioDAO {
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
         ps.setInt(1, repositorio.getTipo().getId());
         ps.setString(2, repositorio.getUrl());
         ps.setString(3, repositorio.getVersao());
         ps.setString(4, repositorio.getRepositorios());
         ps.setString(5, repositorio.getDescricao());
         ps.setBoolean(6, repositorio.getAtivo());
-
         ps.execute();
         ps.close();
-        //cnn.commit();
         cnn.close();
     }
     
-    public void alterar(Repositorio repositorio) throws Exception {
-        //"UPDATE Messages SET description = ?, author = ? WHERE id = ? AND seq_num = ?"
+    public void editar(Repositorio repositorio) throws Exception {
         String sql = "UPDATE repositorio SET "
                 + " tipo = ?,"
                 + " url = ?,"
@@ -60,16 +56,9 @@ public class RepositorioDAO {
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-        ps.setInt(1, repositorio.getTipo().getId());
-        ps.setString(2, repositorio.getUrl());
-        ps.setString(3, repositorio.getVersao());
-        ps.setString(4, repositorio.getRepositorios());
-        ps.setString(5, repositorio.getDescricao());
-        ps.setBoolean(6, repositorio.getAtivo());
-        ps.setInt(7, repositorio.getId());
-
         ps.execute();
         ps.close();
+        cnn.commit();
         cnn.close();
     }
     
@@ -78,24 +67,21 @@ public class RepositorioDAO {
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-        
         ps.setInt(1, id);
         ps.execute();
-        
         ps.close();
         cnn.close();
     }
     
     public Repositorio selecionar(Integer id) throws Exception {
         Repositorio repositorio = null;
-        String sql = "select * from repositorio where id = ?";
+        String sql = "SELECT * FROM repositorio WHERE id = ?";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            
             repositorio = new Repositorio();
             repositorio.setId(rs.getInt("id"));
             repositorio.setTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
@@ -104,7 +90,6 @@ public class RepositorioDAO {
             repositorio.setRepositorios(rs.getString("repositorios"));
             repositorio.setDescricao(rs.getString("descricao"));
             repositorio.setAtivo(rs.getBoolean("ativo"));
-            
         }
         rs.close();
         ps.close();
@@ -113,14 +98,13 @@ public class RepositorioDAO {
     }
     
     public List<Repositorio> listar() throws Exception {
-        String sql = "select * from repositorio order by id ";
+        String sql = "SELECT * FROM repositorio ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<Repositorio> lista = new ArrayList<Repositorio>();
         while (rs.next()) {
-            
             Repositorio repositorio = new Repositorio();
             repositorio.setId(rs.getInt("id"));
             repositorio.setTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
@@ -129,7 +113,6 @@ public class RepositorioDAO {
             repositorio.setRepositorios(rs.getString("repositorios"));
             repositorio.setDescricao(rs.getString("descricao"));
             repositorio.setAtivo(rs.getBoolean("ativo"));
-            
             lista.add(repositorio);
         }
         rs.close();
@@ -139,7 +122,7 @@ public class RepositorioDAO {
     }
     
     public List<Repositorio> listarAtivos() throws Exception {
-        String sql = "select * from repositorio where ativo = ? order by id ";
+        String sql = "SELECT * FROM repositorio WHERE ativo = ? ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -147,7 +130,6 @@ public class RepositorioDAO {
         ResultSet rs = ps.executeQuery();
         List<Repositorio> lista = new ArrayList<Repositorio>();
         while (rs.next()) {
-            
             Repositorio repositorio = new Repositorio();
             repositorio.setId(rs.getInt("id"));
             repositorio.setTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
@@ -157,7 +139,6 @@ public class RepositorioDAO {
             repositorio.setDescricao(rs.getString("descricao"));
             repositorio.setAtivo(rs.getBoolean("ativo"));
             lista.add(repositorio);
-            
         }
         rs.close();
         ps.close();
@@ -166,7 +147,7 @@ public class RepositorioDAO {
     }
     
     public List<Repositorio> listarInativos() throws Exception {
-        String sql = "select * from repositorio where ativo = ? order by id ";
+        String sql = "SELECT * FROM repositorio WHERE ativo = ? ORDER BY id ";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
@@ -174,7 +155,6 @@ public class RepositorioDAO {
         ResultSet rs = ps.executeQuery();
         List<Repositorio> lista = new ArrayList<Repositorio>();
         while (rs.next()) {
-            
             Repositorio repositorio = new Repositorio();
             repositorio.setId(rs.getInt("id"));
             repositorio.setTipo(new RepositorioTipoDAO().selecionar(rs.getInt("tipo")));
@@ -184,7 +164,6 @@ public class RepositorioDAO {
             repositorio.setDescricao(rs.getString("descricao"));
             repositorio.setAtivo(rs.getBoolean("ativo"));
             lista.add(repositorio);
-            
         }
         rs.close();
         ps.close();

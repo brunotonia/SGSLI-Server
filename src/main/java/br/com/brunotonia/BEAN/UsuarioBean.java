@@ -43,16 +43,20 @@ public class UsuarioBean {
         return usuario;
     }
 
-    public void setRepositorio(Usuario usuario) {
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public List<Usuario>  getListaRepositorios() {
+    public List<Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
 
-    public void setListaRepositorios(List listaRepositorios) {
-        this.listaUsuarios = listaRepositorios;
+    public void setListaUsuarios(List<Usuario> listaUsuarios) {
+        this.listaUsuarios = listaUsuarios;
     }
 
     public UsuarioTipo getTipo() {
@@ -67,7 +71,7 @@ public class UsuarioBean {
         return listaTipos;
     }
 
-    public void setListaTipos(List listaTipos) {
+    public void setListaTipos(List<UsuarioTipo> listaTipos) {
         this.listaTipos = listaTipos;
     }
 
@@ -112,4 +116,5 @@ public class UsuarioBean {
         new UsuarioBO().ativarDesativar(usuario);
         prepararAdicionar(actionEvent);
     } 
+    
 }

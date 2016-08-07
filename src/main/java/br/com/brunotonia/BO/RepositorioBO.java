@@ -44,7 +44,7 @@ public class RepositorioBO {
     
     public Boolean alterar(Repositorio repositorio) {
         try {
-            new RepositorioDAO().alterar(repositorio);
+            new RepositorioDAO().editar(repositorio);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
