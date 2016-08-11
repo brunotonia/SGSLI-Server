@@ -33,10 +33,8 @@ public class InstalacaoDAO {
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
         ps.setInt(1, p.getPacote().getId());
         ps.setBoolean(2, p.getAtivo());
-
         ps.execute();
         ps.close();
         cnn.commit();
@@ -52,12 +50,10 @@ public class InstalacaoDAO {
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-
             instalacao = new Instalacao();
             instalacao.setId(rs.getInt("id"));
             instalacao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
             instalacao.setAtivo(rs.getBoolean("ativo"));
-
         }
         rs.close();
         ps.close();
@@ -100,8 +96,8 @@ public class InstalacaoDAO {
         return lista;
     }
 
-    public List<Instalacao> listar(Integer id) throws Exception {
-        String sql = "SELECT * FROM instalacao WHERE id > ? AND ativo = ? ORDER BY id ";
+    public List<Instalacao> listarAtivos(Integer id) throws Exception {
+        String sql = "SELECT * FROM instalacao WHERE id > ? AND ativo = ? ORDER BY id";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);

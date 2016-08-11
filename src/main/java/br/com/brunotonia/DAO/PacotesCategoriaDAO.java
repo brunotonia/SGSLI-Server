@@ -72,7 +72,7 @@ public class PacotesCategoriaDAO {
     }
 
     public List<PacotesCategoria> listar() throws Exception {
-        String sql = "SELECT * FROM pacotes_categoria ORDER BY id ";
+        String sql = "SELECT * FROM pacotes_categoria ORDER BY categoria";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);

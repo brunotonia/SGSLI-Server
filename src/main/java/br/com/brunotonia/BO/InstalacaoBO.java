@@ -56,9 +56,9 @@ public class InstalacaoBO {
         }
     }
     
-    public List<Instalacao> listar(Integer id) {
+    public List<Instalacao> listarAtivos(Integer id) {
         try {
-            return new InstalacaoDAO().listar(id);
+            return new InstalacaoDAO().listarAtivos(id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

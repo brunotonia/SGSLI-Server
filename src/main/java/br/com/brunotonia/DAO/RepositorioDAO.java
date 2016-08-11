@@ -41,6 +41,7 @@ public class RepositorioDAO {
         ps.setBoolean(6, repositorio.getAtivo());
         ps.execute();
         ps.close();
+        cnn.commit();
         cnn.close();
     }
     
@@ -56,6 +57,13 @@ public class RepositorioDAO {
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setInt(1, repositorio.getTipo().getId());
+        ps.setString(2, repositorio.getUrl());
+        ps.setString(3, repositorio.getVersao());
+        ps.setString(4, repositorio.getRepositorios());
+        ps.setString(5, repositorio.getDescricao());
+        ps.setBoolean(6, repositorio.getAtivo());
+        ps.setInt(7, repositorio.getId());
         ps.execute();
         ps.close();
         cnn.commit();

@@ -127,7 +127,7 @@
             <h:form id="formAdicionar" >
                 <p:panelGrid id="panelAdicionar" columns="2">
                     <p:outputLabel value="Tipo " />
-                    <p:selectOneMenu id="tipo" value="#{repositorioSecurityBean.idTipo}">
+                    <p:selectOneMenu id="tipo" value="#{repositorioSecurityBean.idTipo}" >
                         <f:selectItem itemLabel="deb" itemValue="1" />
                         <f:selectItem itemLabel="deb-src" itemValue="2" />
                     </p:selectOneMenu>
@@ -245,10 +245,11 @@
         </p:dialog> 
     </h:body>
     <h:body rendered="#{sessionScope.usr eq null}">
-        <h:form id="formLogin" >
+        <p:layoutUnit position="center" resizable="false">
+            <h:form id="formLogin" >
             <p:messages id="messages" />
             <p:panel header="Login" >
-                <h:panelGrid id="panelAdicionar" columns="2" border="0" width="20%">
+                <h:panelGrid id="panelAdicionar" columns="2" border="0" width="20%" >
                     <p:outputLabel for="login" value="Login " />
                     <p:inputText id="login" value="#{loginBean.login}"/>
                     <p:outputLabel for="senha" value="Senha " />
@@ -262,6 +263,10 @@
                     ajax="false" />
             </p:panel>
         </h:form>
+        </p:layoutUnit>
+
+
+
     </h:body>
 </html>
 

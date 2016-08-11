@@ -21,24 +21,32 @@ import br.com.brunotonia.BO.PacotesBO;
 import br.com.brunotonia.BO.PacotesCategoriaBO;
 import br.com.brunotonia.VO.Instalacao;
 import br.com.brunotonia.VO.Pacotes;
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 @ManagedBean(name = "instalacaoBean")
-public class InstalacaoBean {
+@ViewScoped
+public class InstalacaoBean implements Serializable {
     
     private Instalacao instalacao;
     private Pacotes pacote;
     private List listaInstalacao;
     private List listaPacotes;
     private List listaCategorias;
-    private Integer idCategoria;
+    private static Integer idCategoria;
+    private Integer idPacote;
+    private Integer idVisualizacao;
 
     public InstalacaoBean() {
         this.instalacao = new Instalacao();
         this.pacote = new Pacotes();
         this.listaInstalacao = new InstalacaoBO().listar();
+        this.idCategoria = 0;
+        this.idVisualizacao = 0;
     }
 
     public Instalacao getInstalacao() {
@@ -89,30 +97,39 @@ public class InstalacaoBean {
         this.idCategoria = idCategoria;
     }
 
+    public Integer getIdPacote() {
+        return idPacote;
+    }
+
+    public void setIdPacote(Integer idPacote) {
+        this.idPacote = idPacote;
+    }
+
+    public Integer getIdVisualizacao() {
+        return idVisualizacao;
+    }
+
+    public void setIdVisualizacao(Integer idVisualizacao) {
+        this.idVisualizacao = idVisualizacao;
+    }
+
     public void preparar(ActionEvent actionEvent) {
         this.instalacao = new Instalacao();
         this.listaInstalacao = new InstalacaoBO().listar();
     }
     
     public void ativarDesativar(ActionEvent actionEvent) {
-        System.out.println("Ativar ou Desativar");
         new InstalacaoBO().ativarDesativar(new InstalacaoBO().selecionar(instalacao.getId()));
-        
-        
-        /*System.out.println(instalacao.getId());
-        System.out.println(instalacao.getPacote());
-        System.out.println(instalacao.getAtivo());
-        */
         preparar(actionEvent);
     }
     
     public void prepararAdicionar(ActionEvent actionEvent) {
         this.listaCategorias = new PacotesCategoriaBO().listar();
         this.listaPacotes = new PacotesBO().listarAtivos();
-        this.listaInstalacao = new InstalacaoBO().listar();
     }
     
-    public void listarPacotes(ActionEvent actionEvent) {
+    // Era a variável de parametro!
+    public void listarPacotes(ValueChangeEvent valueChangeEvent) {
         if (idCategoria == 0) {
             this.listaPacotes = new PacotesBO().listarAtivos();
         } else {
@@ -120,5 +137,15 @@ public class InstalacaoBean {
         }   
     }
     
+    public void adicionar(ActionEvent actionEvent) {
+        instalacao.setPacote(new PacotesBO().selecionar(idPacote));
+        instalacao.setAtivo(true);
+        new InstalacaoBO().adicionar(instalacao);
+        preparar(actionEvent);
+    }
+    
+    public void prepararVisualizar(ActionEvent actionEvent) {
+        this.idVisualizacao = 0;
+    }
     
 }

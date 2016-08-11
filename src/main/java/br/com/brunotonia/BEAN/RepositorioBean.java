@@ -17,6 +17,7 @@
 package br.com.brunotonia.BEAN;
 
 import br.com.brunotonia.BO.RepositorioBO;
+import br.com.brunotonia.BO.RepositorioSecurityBO;
 import br.com.brunotonia.BO.RepositorioTipoBO;
 import br.com.brunotonia.VO.Repositorio;
 import br.com.brunotonia.VO.RepositorioTipo;

@@ -70,10 +70,10 @@ public class AptGetWS {
     public String instalarPacotes() {
         InstalacaoBO instalacaoBO = new InstalacaoBO();
         String resultado = "";
-        List<Instalacao> lista_install = instalacaoBO.listar();
+        List<Instalacao> lista_install = instalacaoBO.listarAtivos(0);
         for (Instalacao i : lista_install) {
-            if (i.getPacote().getAtivo() && i.getAtivo()) {
-                resultado += i.getPacote().getPacote() + " ";
+            if (i.getPacote().getAtivo()) {
+                resultado = resultado + i.getPacote().getPacote() + " ";
             }
         }
         return resultado;
@@ -83,12 +83,11 @@ public class AptGetWS {
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String instalarPacotes(@PathParam("versao") Integer versao) {
-        InstalacaoBO instalacaoBO = new InstalacaoBO();
         String resultado = "";
-        List<Instalacao> lista_install = instalacaoBO.listar(versao);
+        List<Instalacao> lista_install = new InstalacaoBO().listarAtivos(versao);
         for (Instalacao i : lista_install) {
             if (i.getPacote().getAtivo() && i.getAtivo()) {
-                resultado += i.getPacote().getPacote() + " ";
+                resultado += i.getPacote() + " ";
             }
         }
         return resultado;
