@@ -16,6 +16,8 @@
  */
 package br.com.brunotonia.VO;
 
+import java.util.Calendar;
+
 public class Versao {
 
     private Integer id;
@@ -23,8 +25,12 @@ public class Versao {
     private Integer instalacao;
     private Integer remocao;
     private Integer update;
+    private String dataUpdate;
     private Integer upgrade;
-    private Integer distUpdate;
+    private String dataUpgrade;
+    private Integer distUpgrade;
+    private String dataDistUpGrade;
+    private String dataListaPacotes;
     
     public Versao() {
     }
@@ -36,9 +42,9 @@ public class Versao {
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
     public Integer getSources() {
-        return this.sources;
+        return sources;
     }
 
     public void setSources(Integer sources) {
@@ -46,7 +52,7 @@ public class Versao {
     }
 
     public Integer getInstalacao() {
-        return this.instalacao;
+        return instalacao;
     }
 
     public void setInstalacao(Integer instalacao) {
@@ -54,7 +60,7 @@ public class Versao {
     }
 
     public Integer getRemocao() {
-        return this.remocao;
+        return remocao;
     }
 
     public void setRemocao(Integer remocao) {
@@ -69,21 +75,55 @@ public class Versao {
         this.update = update;
     }
 
+    public String getDataUpdate() {
+        return dataUpdate;
+    }
+
+    public void setDataUpdate(String dataUpdate) {
+        this.dataUpdate = dataUpdate;
+    }
+
     public Integer getUpgrade() {
-        return this.upgrade;
+        return upgrade;
     }
 
     public void setUpgrade(Integer upgrade) {
         this.upgrade = upgrade;
     }
-    
-    public Integer getDistUpdate() {
-        return this.distUpdate;
+
+    public String getDataUpgrade() {
+        return dataUpgrade;
     }
 
-    public void setDistUpdate(Integer distUpdate) {
-        this.distUpdate = distUpdate;
+    public void setDataUpgrade(String dataUpgrade) {
+        this.dataUpgrade = dataUpgrade;
     }
+
+    public Integer getDistUpgrade() {
+        return distUpgrade;
+    }
+
+    public void setDistUpgrade(Integer distUpgrade) {
+        this.distUpgrade = distUpgrade;
+    }
+
+    public String getDataDistUpGrade() {
+        return dataDistUpGrade;
+    }
+
+    public void setDataDistUpGrade(String dataDistUpGrade) {
+        this.dataDistUpGrade = dataDistUpGrade;
+    }
+
+    public String getDataListaPacotes() {
+        return dataListaPacotes;
+    }
+
+    public void setDataListaPacotes(String dataListaPacotes) {
+        this.dataListaPacotes = dataListaPacotes;
+    }
+
+    
     
     @Override
     public String toString() {
@@ -93,7 +133,7 @@ public class Versao {
                 + "  remoção = " + remocao + "\n"
                 + "  update = " + update + "\n"
                 + "  upgrade = " + upgrade+ "\n"
-                + "  distUpdate = " + distUpdate;
+                + "  distUpdate = " + distUpgrade;
     }
     
 }

@@ -28,7 +28,7 @@
                 <p:menuitem value="Remoção" outcome="remocao" icon="fa fa-remove">
                     <f:param name="i" value="3" />
                 </p:menuitem>
-                <p:menuitem value="Update" outcome="principal" icon="fa fa-linux">
+                <p:menuitem value="Update" outcome="update" icon="fa fa-linux">
                     <f:param name="i" value="4" />
                 </p:menuitem>
                 <p:menuitem value="Usuários" outcome="usuarios" icon="fa fa-users">
@@ -88,18 +88,7 @@
                                     target="#{usuarioBean.usuario}"
                                     value="#{usr}" />
                             </p:commandButton>
-                            <p:commandButton 
-                                icon="fa fa-key"
-                                title="Alterar Senha" 
-                                actionListener="#{usuarioBean.prepararAdicionar}"
-                                update=":formEditar"
-                                onclick="PF('dialogEditar').show();"
-                                ajax="true"
-                                disabled="#{usr.id ne sessionScope.usr.id}">
-                                <f:setPropertyActionListener 
-                                    target="#{usuarioBean.usuario}"
-                                    value="#{usr}" />
-                            </p:commandButton>
+                            
                             <p:commandButton 
                                 icon="fa fa-trash"
                                 title="Excluir" 
@@ -257,7 +246,7 @@
                     <p:inputText id="nome" value="#{usuarioBean.usuario.nome}"/>
                     <p:outputLabel for="login" value="Login " />
                     <p:inputText id="login" value="#{usuarioBean.usuario.login}"/>
-                    <p:outputLabel for="senha" value="Senha " />
+                    <p:outputLabel for="senha" value="Senha Atual" />
                     <p:password id="senha" value="#{usuarioBean.usuario.senha}"/>
                     <p:outputLabel value="Ativo " />
                     <p:selectBooleanCheckbox value="#{usuarioBean.usuario.ativo}" />
@@ -278,6 +267,27 @@
                     update="formEditar"/>
             </h:form>
         </p:dialog> 
+    </h:body>
+    <h:body rendered="#{sessionScope.usr eq null}">
+        <p:layoutUnit position="center" resizable="false">
+            <h:form id="formLogin" >
+            <p:messages id="messages" />
+            <p:panel header="SGSLI - Login" >
+                <h:panelGrid id="panelAdicionar" columns="2" border="0" width="20%" >
+                    <p:outputLabel for="login" value="Login " />
+                    <p:inputText id="login" value="#{loginBean.login}"/>
+                    <p:outputLabel for="senha" value="Senha " />
+                    <p:password id="senha" value="#{loginBean.senha}"/>
+                </h:panelGrid>
+                <p:separator />
+                <p:commandButton 
+                    icon="fa fa-lock"
+                    value="Login" 
+                    action="#{loginBean.login()}" 
+                    ajax="false" />
+            </p:panel>
+        </h:form>
+        </p:layoutUnit>
     </h:body>
 </html>
 

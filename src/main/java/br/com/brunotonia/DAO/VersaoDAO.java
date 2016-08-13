@@ -16,6 +16,7 @@
  */
 package br.com.brunotonia.DAO;
 
+import br.com.brunotonia.UTIL.CalendarUtil;
 import br.com.brunotonia.VO.Versao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,7 +39,7 @@ public class VersaoDAO {
             retorno.setRemocao(rs.getInt("remocao"));
             retorno.setUpdate(rs.getInt("updt"));
             retorno.setUpgrade(rs.getInt("upgrade"));
-            retorno.setDistUpdate(rs.getInt("dist_update"));
+            retorno.setDistUpgrade(rs.getInt("dist_upgrade"));
         }
         rs.close();
         ps.close();
@@ -48,12 +49,13 @@ public class VersaoDAO {
     
     public void incrementarUpdate() throws Exception {
         String sql = "UPDATE versao SET "
-                + " updt = updt + 1"
+                + " updt = updt + 1,"
+                + " data_update = ?"
                 + " WHERE id = 1";
         Conexoes cnx = new Conexoes();
         Connection cnn = cnx.getConexao();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
+        ps.setDate(1, new CalendarUtil().getDataAtual());
         ps.execute();
         ps.close();
         cnn.commit();

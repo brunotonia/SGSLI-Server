@@ -22,9 +22,11 @@ import br.com.brunotonia.VO.RepositorioSecurity;
 import br.com.brunotonia.VO.RepositorioTipo;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "repositorioSecurityBean")
+@ViewScoped
 public class RepositorioSecurityBean {
 
     private RepositorioSecurity repositorio = new RepositorioSecurity();

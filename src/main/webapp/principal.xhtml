@@ -48,4 +48,25 @@
             </p:layout>
         </div>
     </h:body>
+    <h:body rendered="#{sessionScope.usr eq null}">
+        <p:layoutUnit position="center" resizable="false">
+            <h:form id="formLogin" >
+            <p:messages id="messages" />
+            <p:panel header="SGSLI - Login" >
+                <h:panelGrid id="panelAdicionar" columns="2" border="0" width="20%" >
+                    <p:outputLabel for="login" value="Login " />
+                    <p:inputText id="login" value="#{loginBean.login}"/>
+                    <p:outputLabel for="senha" value="Senha " />
+                    <p:password id="senha" value="#{loginBean.senha}"/>
+                </h:panelGrid>
+                <p:separator />
+                <p:commandButton 
+                    icon="fa fa-lock"
+                    value="Login" 
+                    action="#{loginBean.login()}" 
+                    ajax="false" />
+            </p:panel>
+        </h:form>
+        </p:layoutUnit>
+    </h:body>
 </html>

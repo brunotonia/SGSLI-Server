@@ -14,3 +14,18 @@ http://www.guj.com.br/t/login-session-no-jsf/86826/6
 
 
 http://www.cin.ufpe.br/~jvwr/JSF/jsf.pdf
+
+
+
+<!--<p:commandButton 
+                                icon="fa fa-key"
+                                title="Alterar Senha" 
+                                actionListener="#{usuarioBean.prepararAdicionar}"
+                                update=":formEditar"
+                                onclick="PF('dialogEditar').show();"
+                                ajax="true"
+                                disabled="#{usr.id ne sessionScope.usr.id}">
+                                <f:setPropertyActionListener 
+                                    target="#{usuarioBean.usuario}"
+                                    value="#{usr}" />
+                            </p:commandButton>-->
