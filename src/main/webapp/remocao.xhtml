@@ -22,7 +22,7 @@
                 <p:menuitem value="Repositórios" outcome="repositorio" icon="fa fa-database">
                     <f:param name="i" value="1" />
                 </p:menuitem>
-                <p:menuitem value="Instalação" outcome="instalacao" icon="fa fa-download">
+                <p:menuitem value="Remoção" outcome="instalacao" icon="fa fa-download">
                     <f:param name="i" value="2" />
                 </p:menuitem>
                 <p:menuitem value="Remoção" outcome="remocao" icon="fa fa-remove">
@@ -39,7 +39,7 @@
         </h:form>
         <p:spacer width="100" height="10" />
         <!-- Menu -->
-        <div align="left">
+        <div align="center">
             <h:form id="formPrincipal" >
                 <p:panel header="Gerenciar Pacotes para Remoção" style="width: 95%">
                     <p:spacer width="20" height="20" />
@@ -76,8 +76,8 @@
                                 onclick="PF('dialogPacote').show();"
                                 ajax="true" >
                                 <f:setPropertyActionListener 
-                                    target="#{remocaoBean.instalacao}"
-                                    value="#{rem}" />
+                                    target="#{instalacaoBean.instalacao}"
+                                    value="#{ins}" />
                             </p:commandButton>
                             <p:commandButton 
                                 icon="fa fa-ban"
@@ -85,21 +85,21 @@
                                 update=":formAtivar"
                                 onclick="PF('dialogAtivar').show();"
                                 ajax="true"
-                                rendered="#{ins.ativo eq true and sessionScope.usr.tipo.id ne 3}">
+                                rendered="#{rem.ativo eq true and sessionScope.usr.tipo.id ne 3}">
                                 <f:setPropertyActionListener 
-                                    target="#{remocaoBean.remocao}"
+                                    target="#{instalacaoBean.instalacao}"
                                     value="#{ins}" />
                             </p:commandButton>
                             <p:commandButton 
                                 icon="fa fa-check"
-                                title="Ativar Pacote para Instalação"
-                                actionListener="#{remocaoBean.preparar(actionEvent)}" 
+                                title="Ativar Pacote para Remoção"
+                                actionListener="#{instalacaoBean.preparar(actionEvent)}" 
                                 update=":formAtivar"
                                 onclick="PF('dialogAtivar').show();"
                                 ajax="true"
-                                rendered="#{ins.ativo eq false and sessionScope.usr.tipo.id ne 3}">
+                                rendered="#{rem.ativo eq false and sessionScope.usr.tipo.id ne 3}">
                                 <f:setPropertyActionListener 
-                                    target="#{remocaoBean.remocao}"
+                                    target="#{instalacaoBean.instalacao}"
                                     value="#{ins}" />
                             </p:commandButton>
                         </p:column>
@@ -109,13 +109,13 @@
                     <p:commandButton 
                         icon="fa fa-plus"
                         value="Adicionar" 
-                        actionListener="#{remocaoBean.prepararAdicionar(actionEvent)}"
+                        actionListener="#{instalacaoBean.prepararAdicionar(actionEvent)}"
                         update="formAdicionar"
                         onclick="PF('dialogAdicionar').show();"
                         ajax="true" />
                     <p:commandButton 
                         icon="fa fa-file-o"
-                        value="Visualizar apt-get remove" 
+                        value="Visualizar apt-get install" 
                         onclick="PF('dialogInstalacao').show();"
                         ajax="true" />
                 </p:panel>
@@ -129,33 +129,40 @@
             modal="true"
             closeOnEscape="true"
             resizable="false"
-            height="50%">
+            height="50%"
+            width="50%">
             <h:form id="formAdicionar" acceptcharset="UTF-8" enctype="application/form-data" >
-                <p:panelGrid id="panelAdicionar" columns="2">
+                <h:panelGrid id="panelAdicionar" columns="2"  border="0">
                     <p:outputLabel for="categoria" value="Categoria" />
                     <p:selectOneMenu 
                         id="categoria"
-                        value="#{remocaoBean.idCategoria}"
+                        value="#{instalacaoBean.idCategoria}"
                         filter="true"
                         filterMatchMode="startsWith" >
-                        <p:ajax update="pacote" listener="#{remocaoBean.listarPacotes(valueChangeEvent)}" />
-                        <f:selectItem itemLabel="Todos" itemValue="0" />
-                        <f:selectItems value="#{remocaoBean.listaCategorias}" var="cat" itemLabel="#{cat.categoria} - #{cat.id}" itemValue="#{cat.id}"/>
+                        <p:ajax update="pacote" listener="#{instalacaoBean.listarPacotes(valueChangeEvent)}" />
+                        <f:selectItem itemLabel="Todas" itemValue="0" />
+                        <f:selectItems value="#{instalacaoBean.listaCategorias}" var="cat" itemLabel="#{cat.categoria}" itemValue="#{cat.id}"/>
                     </p:selectOneMenu>
                     <p:outputLabel for="pacote" value="Categoria" />
                     <p:selectOneMenu 
                         id="pacote" 
-                        value="#{remocaoBean.idPacote}"
-                        filter="true"
-                        filterMatchMode="startsWith">
-                        <f:selectItems value="#{remocaoBean.listaPacotes}" var="pct" itemLabel="#{pct.pacote}" itemValue="#{pct.id}"/>
+                        value="#{instalacaoBean.idPacote}">
+                        <p:ajax update="panelAdicionar2" listener="#{instalacaoBean.carregarPacotes(valueChangeEvent)}" />
+                        <f:selectItem itemLabel="Selecionar" itemValue="0" />
+                        <f:selectItems value="#{instalacaoBean.listaPacotes}" var="pct" itemLabel="#{pct.pacote}" itemValue="#{pct.id}"/>
                     </p:selectOneMenu>
-                </p:panelGrid>
+                </h:panelGrid>
+                <h:panelGrid id="panelAdicionar2" columns="2" border="0">
+                    <p:outputLabel value="Descrição " />
+                    <p:outputLabel id="desc" value="#{instalacaoBean.pacote.descricao} " />
+                    <p:outputLabel value="Dependências" />
+                    <p:outputLabel id="dep" value="#{instalacaoBean.pacote.dependencias} " />
+                </h:panelGrid>
                 <p:separator />
                 <p:commandButton 
                     icon="fa fa-plus"
                     value="Adicionar" 
-                    action="#{remocaoBean.adicionar(actionEvent)}"
+                    action="#{instalacaoBean.adicionar(actionEvent)}"
                     update=":formPrincipal:tabela"
                     oncomplete="dialogAdicionar.hide()"
                     process="@form"
@@ -174,20 +181,21 @@
             modal="true"
             closeOnEscape="true"
             resizable="false"
-            height="50%">
+            height="50%"
+            width="60%">
             <h:form id="formPacote" acceptcharset="UTF-8" enctype="application/form-data" >
-                <p:panelGrid id="panelPacote" columns="2">
-                    <p:outputLabel value="Pacote " />
-                    <p:outputLabel value="#{remocaoBean.remocao.pacote} " />
-                    <p:outputLabel value="Categoria " />
-                    <p:outputLabel value="#{remocaoBean.remocao.pacote.categoria} " />
-                    <p:outputLabel value="Descrição " />
-                    <p:outputLabel value="#{remocaoBean.remocao.pacote.descricao} " />
-                    <p:outputLabel value="Dependências " />
-                    <p:outputLabel value="#{remocaoBean.remocao.pacote.dependencias} " />
-                    <p:outputLabel value="Ativo " />
-                    <p:selectBooleanCheckbox value="#{remocaoBean.remocao.pacote.ativo}" disabled="true" />
-                </p:panelGrid>
+                <h:panelGrid id="panelPacote" columns="2" border="">
+                    <p:outputLabel value="Pacote: " />
+                    <p:outputLabel value="#{instalacaoBean.instalacao.pacote} " />
+                    <p:outputLabel value="Categoria: " />
+                    <p:outputLabel value="#{instalacaoBean.instalacao.pacote.categoria} " />
+                    <p:outputLabel value="Descrição: " />
+                    <p:outputLabel value="#{instalacaoBean.instalacao.pacote.descricao} " />
+                    <p:outputLabel value="Dependências: " />
+                    <p:outputLabel value="#{instalacaoBean.instalacao.pacote.dependencias} " />
+                    <p:outputLabel value="Ativo: " />
+                    <p:selectBooleanCheckbox value="#{instalacaoBean.instalacao.pacote.ativo}" disabled="true" />
+                </h:panelGrid>
                 <p:separator />
                 <p:commandButton 
                     icon="fa fa-close"
@@ -196,7 +204,7 @@
                     update="formPacote"/>
             </h:form>
         </p:dialog>   
-        <!-- Ativar Desativar pacote-->
+        <!-- Ativar Desativar Pacote-->
         <p:dialog 
             header="Ativar/Desativar Pacote"
             widgetVar="dialogAtivar"
@@ -204,15 +212,15 @@
             closeOnEscape="true"
             resizable="false">
             <h:form id="formAtivar" >
-                <h:inputHidden value="#{remocaoBean.remocao.id}" />
-                <p:outputLabel value="Deseja desativar o pacote:  #{remocaoBean.remocao.pacote}?" rendered="#{remocaoBean.remocao.ativo eq true}"/>
-                <p:outputLabel value="Deseja ativar o pacote:  #{remocaoBean.remocao.pacote}?" rendered="#{remocaoBean.remocao.ativo eq false}"/>
+                <h:inputHidden value="#{instalacaoBean.instalacao.id}" />
+                <p:outputLabel value="Deseja desativar o pacote:  #{instalacaoBean.instalacao.pacote}?" rendered="#{instalacaoBean.instalacao.ativo eq true}"/>
+                <p:outputLabel value="Deseja ativar o pacote:  #{instalacaoBean.instalacao.pacote}?" rendered="#{instalacaoBean.instalacao.ativo eq false}"/>
                 <p:separator />
                 <p:commandButton 
                     icon="fa fa-check"
                     value="Sim" 
-                    action="#{remocaoBean.ativarDesativar(actionEvent)}"
-                    update="dialogAtivar"
+                    action="#{instalacaoBean.ativarDesativar(actionEvent)}"
+                    update="formPrincipal"
                     oncomplete="dialogAtivar.hide()"
                     process="@form"
                     ajax="false"/>
@@ -222,53 +230,53 @@
                     onsuccess="PF('dialogAtivar').hide();" />
             </h:form>
         </p:dialog> 
-        <!-- Formulário Instalação -->
+        <!-- Formulário Remoção -->
         <p:dialog 
-            header="# apt-get remove "
+            header="# apt-get install "
             widgetVar="dialogInstalacao"
             modal="true"
             closeOnEscape="true"
             resizable="false"
             width="60%">
             <h:form id="formVisualizar" >
-                <iframe id="iframeCenter" src="client-data/apt-get/remove/#{remocaoBean.idVisualizacao}" width="100%"  
+                <iframe id="iframeCenter" src="client-data/apt-get/install/#{instalacaoBean.idVisualizacao}" width="100%"  
                         height="50%" frameborder="0">  
                 </iframe>
                 <p:separator />
-                <p:panelGrid id="panelAdicionar" columns="2">
-                    <p:outputLabel value="Selecione o valor" />
-                    <p:spinner id="spinner" value="#{remocaoBean.idVisualizacao}" min="0">
+                <h:panelGrid id="panelAdicionar" columns="2" border="0">
+                    <p:outputLabel value="Selecione o valor: " />
+                    <p:spinner id="spinner" value="#{instalacaoBean.idVisualizacao}" min="0" max="#{versaoBean.versao.instalacao}">
                         <p:ajax update="@form" process="@this" />
                     </p:spinner>
-                </p:panelGrid>
+                </h:panelGrid>
                 <p:separator />
             </h:form>
             <p:commandButton 
                 icon="fa fa-close"
                 value="Fechar"
-                action="#{remocaoBean.prepararVisualizar(actionEvent)}"
+                action="#{instalacaoBean.prepararVisualizar(actionEvent)}"
                 onsuccess="PF('dialogInstalacao').hide();" />
         </p:dialog> 
     </h:body>
     <h:body rendered="#{sessionScope.usr eq null}">
         <p:layoutUnit position="center" resizable="false">
             <h:form id="formLogin" >
-            <p:messages id="messages" />
-            <p:panel header="SGSLI - Login" >
-                <h:panelGrid id="panelAdicionar" columns="2" border="0" width="20%" >
-                    <p:outputLabel for="login" value="Login " />
-                    <p:inputText id="login" value="#{loginBean.login}"/>
-                    <p:outputLabel for="senha" value="Senha " />
-                    <p:password id="senha" value="#{loginBean.senha}"/>
-                </h:panelGrid>
-                <p:separator />
-                <p:commandButton 
-                    icon="fa fa-lock"
-                    value="Login" 
-                    action="#{loginBean.login()}" 
-                    ajax="false" />
-            </p:panel>
-        </h:form>
+                <p:messages id="messages" />
+                <p:panel header="SGSLI - Login" >
+                    <h:panelGrid id="panelAdicionar" columns="2" border="0" width="20%" >
+                        <p:outputLabel for="login" value="Login " />
+                        <p:inputText id="login" value="#{loginBean.login}"/>
+                        <p:outputLabel for="senha" value="Senha " />
+                        <p:password id="senha" value="#{loginBean.senha}"/>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:commandButton 
+                        icon="fa fa-lock"
+                        value="Login" 
+                        action="#{loginBean.login()}" 
+                        ajax="false" />
+                </p:panel>
+            </h:form>
         </p:layoutUnit>
     </h:body>
 </html>

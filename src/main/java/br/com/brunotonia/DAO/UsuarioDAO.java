@@ -31,8 +31,7 @@ public class UsuarioDAO {
                 + "(\"tipo\", \"nome\", \"login\", \"senha\", \"ativo\")"
                 + " values "
                 + "(?, ?, ?, ?, ?)";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, usuario.getTipo().getId());
         ps.setString(2, usuario.getNome());
@@ -54,8 +53,7 @@ public class UsuarioDAO {
                 + " senha = ?,"
                 + " ativo = ?"
                 + " WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, usuario.getTipo().getId());
         ps.setString(2, usuario.getNome());
@@ -70,8 +68,7 @@ public class UsuarioDAO {
     
     public void ativarDesativar (Usuario u) throws Exception {
         String sql = "UPDATE usuario SET ativo = ?, WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setBoolean(1, !u.getAtivo());
         ps.setInt(2, u.getId());
@@ -82,8 +79,7 @@ public class UsuarioDAO {
     
     public void alterarSenha(Usuario usuario) throws Exception {
         String sql = "UPDATE usuario SET senha = ? WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, usuario.getSenha());
         ps.setInt(2, usuario.getTipo().getId());
@@ -95,8 +91,7 @@ public class UsuarioDAO {
     
     public void excluir(Integer id) throws Exception {
         String sql = "DELETE FROM usuario WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ps.execute();
@@ -107,8 +102,7 @@ public class UsuarioDAO {
     public Usuario selecionar(Integer id) throws Exception {
         Usuario usuario = null;
         String sql = "SELECT * FROM usuario WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -130,8 +124,7 @@ public class UsuarioDAO {
     public Usuario login(String login, String senha) throws Exception {
         Usuario usuario = null;
         String sql = "SELECT * FROM usuario WHERE login = ? AND senha = ? AND ativo = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, login);
         ps.setString(2, senha);
@@ -154,8 +147,7 @@ public class UsuarioDAO {
     
     public List<Usuario> listar() throws Exception {
         String sql = "SELECT * FROM usuario ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<Usuario> lista = new ArrayList<Usuario>();

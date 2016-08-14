@@ -33,7 +33,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/apt-get")
 public class AptGetWS {
-    
+
     @Path("/update")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
@@ -54,7 +54,7 @@ public class AptGetWS {
         }
         return aux;
     }
-    
+
     @Path("/update/versao")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
@@ -78,7 +78,6 @@ public class AptGetWS {
         }
         return resultado;
     }*/
-    
     @Path("/install/{versao}")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
@@ -92,7 +91,7 @@ public class AptGetWS {
         }
         return resultado;
     }
-    
+
     @Path("/install/versao")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
@@ -116,7 +115,6 @@ public class AptGetWS {
         }
         return resultado;
     }*/
-    
     @Path("/remove/{versao}")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -124,14 +122,14 @@ public class AptGetWS {
         RemocaoBO remocaoBO = new RemocaoBO();
         String resultado = "";
         List<Remocao> lista_remove = remocaoBO.listar(versao);
-        for (Remocao i : lista_remove) {
-            if (i.getPacote().getAtivo() && i.getAtivo()) {
-                resultado += i.getPacote().getPacote() + " ";
+        for (Remocao r : lista_remove) {
+            if (r.getPacote().getAtivo()) {
+                resultado += r.getPacote().getPacote() + " ";
             }
         }
         return resultado;
     }
-    
+
     @Path("/remove/versao")
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
@@ -140,5 +138,5 @@ public class AptGetWS {
         Versao versao = versaoBO.selecionar();
         return versao.getRemocao().toString();
     }
-    
+
 }

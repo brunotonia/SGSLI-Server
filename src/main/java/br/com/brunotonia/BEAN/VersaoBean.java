@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 bruno
+ * Copyright (C) 2016 Bruno Roberto Vasconcelos Tonia
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,14 @@ package br.com.brunotonia.BEAN;
 import br.com.brunotonia.BO.VersaoBO;
 import br.com.brunotonia.UTIL.PacotesUtil;
 import br.com.brunotonia.VO.Versao;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "versaoBean")
 @ViewScoped
-public class VersaoBean {
+public class VersaoBean implements Serializable {
     
     public Versao versao;
 

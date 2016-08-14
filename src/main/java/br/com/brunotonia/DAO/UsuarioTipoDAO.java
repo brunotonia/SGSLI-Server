@@ -32,8 +32,7 @@ public class UsuarioTipoDAO {
     public UsuarioTipo selecionar(Integer id) throws Exception {
         UsuarioTipo usrTipo = null;
         String sql = "SELECT * FROM usuario_tipo WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -50,8 +49,7 @@ public class UsuarioTipoDAO {
     
     public List<UsuarioTipo> listar() throws Exception {
         String sql = "SELECT * FROM usuario_tipo ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<UsuarioTipo> lista = new ArrayList<UsuarioTipo>();

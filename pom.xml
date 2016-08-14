@@ -37,12 +37,13 @@
             <artifactId>jsf-impl</artifactId>
             <version>2.1.7</version>
         </dependency>
-        <!--  Biblioteca para Descompactar Arquivo  -->
+        <!--  Biblioteca para Descompactar Arquivo  
         <dependency>
             <groupId>org.tukaani</groupId>
             <artifactId>xz</artifactId>
             <version>1.5</version>
-        </dependency>
+        </dependency> 
+        -->
         <!--  Biblioteca para Download  -->
         <dependency>
             <groupId>commons-io</groupId>

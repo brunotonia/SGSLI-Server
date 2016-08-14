@@ -28,8 +28,7 @@ public class RepositorioTipoDAO {
     public RepositorioTipo selecionar(Integer id) throws Exception {
         RepositorioTipo repTipo = null;
         String sql = "SELECT * FROM repositorio_tipo WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -47,8 +46,7 @@ public class RepositorioTipoDAO {
     public RepositorioTipo selecionar(String tipo) throws Exception {
         RepositorioTipo repTipo = null;
         String sql = "SELECT * FROM repositorio_tipo WHERE tipo = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, tipo);
         ResultSet rs = ps.executeQuery();
@@ -65,8 +63,7 @@ public class RepositorioTipoDAO {
     
     public List<RepositorioTipo> listar() throws Exception {
         String sql = "SELECT * FROM repositorio_tipo ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<RepositorioTipo> lista = new ArrayList<RepositorioTipo>();

@@ -1,25 +1,25 @@
 ﻿/* DROP TABLE */
+DROP TABLE versao;
 DROP TABLE usuario;
 DROP TABLE usuario_tipo;
 DROP TABLE instalacao;
 DROP TABLE remocao;
 DROP TABLE pacotes;
 DROP TABLE pacotes_categoria;
-/*DROP TRIGGER tr_categorias;*/
-/*DROP FUNCTION categorias();*/
 DROP TABLE repositorio;
 DROP TABLE repositorio_security;
 DROP TABLE repositorio_tipo;
-DROP TABLE versao;
+
+DROP TRIGGER tr_versao_instalacao;
+DROP TRIGGER tr_versao_remocao;
 DROP TRIGGER tr_versao_sources_security;
 DROP TRIGGER tr_versao_sources;
-DROP FUNCTION versao_sources();
-DROP TRIGGER tr_versao_instalacao;
-DROP FUNCTION versao_instalacao();
-DROP TRIGGER tr_versao_remocao;
-DROP FUNCTION versao_remocao();
 DROP TRIGGER tr_inserir_instalacao;
 DROP TRIGGER tr_inserir_remocao;
+
+DROP FUNCTION versao_sources();
+DROP FUNCTION versao_instalacao();
+DROP FUNCTION versao_remocao();
 DROP FUNCTION inserir_instalacao_remocao();
 
 /* Tabelas usaurio e usuario_tipo */
@@ -45,9 +45,19 @@ CREATE TABLE repositorio(id serial PRIMARY KEY, tipo INTEGER NOT NULL, url VARCH
 CREATE TABLE repositorio_security(id serial PRIMARY KEY, tipo INTEGER NOT NULL, url VARCHAR(100) NOT NULL, versao VARCHAR(20) NOT NULL, repositorios VARCHAR(100) NOT NULL, descricao TEXT NOT NULL, ativo BOOLEAN NOT NULL, CONSTRAINT fk_repositorio_tipo2 FOREIGN KEY(tipo) REFERENCES repositorio_tipo(id));
 
 /* Tabela versao */
-CREATE TABLE versao(id serial PRIMARY KEY, sources INTEGER NOT NULL, instalacao INTEGER NOT NULL, remocao INTEGER NOT NULL, updt INTEGER NOT NULL, upgrade INTEGER NOT NULL, dist_update INTEGER NOT NULL);
+CREATE TABLE versao(id serial PRIMARY KEY, 
+                    sources INTEGER NOT NULL,
+                    instalacao INTEGER NOT NULL,
+                    remocao INTEGER NOT NULL,
+                    updt INTEGER NOT NULL,
+		    data_updt VARCHAR(20) NOT NULL,
+                    upgrade INTEGER NOT NULL,
+                    data_upgrade VARCHAR(20) NOT NULL,
+                    dist_upgrade INTEGER NOT NULL,
+		    data_dist_upgrade VARCHAR(20) NOT NULL,
+                    data_pacotes VARCHAR(20) NOT NULL);
 
-INSERT INTO versao VALUES (1, 0, 0, 0, 0, 0, 0);
+INSERT INTO versao VALUES (1, 0, 0, 0, 0, '01/01/0001 00:00:00', 0, '01/01/0001 00:00:00', 0,  '01/01/0001 00:00:00', '01/01/0001 00:00:00');
 
 /* Triggers versao_sources */
 CREATE FUNCTION versao_sources() RETURNS TRIGGER as $$
@@ -61,8 +71,8 @@ CREATE TRIGGER tr_versao_sources AFTER INSERT OR UPDATE OR DELETE ON repositorio
 CREATE TRIGGER tr_versao_sources_security AFTER INSERT OR UPDATE OR DELETE ON repositorio_security FOR EACH ROW EXECUTE PROCEDURE versao_sources();
 
 /* Inserts nas tabelas repositorio e repositorio_security */
-INSERT INTO repositorio (tipo, url, versao, repositorios, descricao, ativo) VALUES (1,'http://sft.if.usp.br/debian/', 'jessie', 'main contrib non-free', 'repositorio padrão','true');
-INSERT INTO repositorio_security (tipo, url, versao, repositorios, descricao, ativo) VALUES (1,'http://security.debian.org/', 'jessie/updates', 'main contrib non-free', 'repositorio padrão','true');
+INSERT INTO repositorio (tipo, url, versao, repositorios, descricao, ativo) VALUES (1,'http://sft.if.usp.br/debian/', 'wheezy', 'main contrib non-free', 'repositorio padrão','true');
+INSERT INTO repositorio_security (tipo, url, versao, repositorios, descricao, ativo) VALUES (1,'http://security.debian.org/', 'wheezy/updates', 'main contrib non-free', 'repositorio padrão','true');
 
 /* Tabelas pacotes_categoria */
 CREATE TABLE pacotes_categoria(id serial PRIMARY KEY, categoria TEXT NOT NULL UNIQUE);

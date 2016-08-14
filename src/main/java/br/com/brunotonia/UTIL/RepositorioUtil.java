@@ -27,21 +27,13 @@ public class RepositorioUtil {
         // Obtém lista de Repositorios do banco de dados
         List<Repositorio> repositorios = new RepositorioBO().listarAtivos();
         List<String> lista = new ArrayList<String>();
-        String url = "";
         for (Repositorio r : repositorios) {
             // Url de exemplo
             // http://sft.if.usp.br/debian/dists/jessie/main/binary-all/Packages.xz
             String aux = r.getUrl() + "dists/" + r.getVersao() + "/";
             String[] rep = r.getRepositorios().split(" ");
-            if (r.getId().equals(1)) {
-                for (String rep1 : rep) {
-                    lista.add(aux + rep1 + "/binary-all/Packages.xz");
-                    lista.add(aux + rep1 + "/binary-i386/Packages.xz");
-                }
-            } else {
-                for (String rep1 : rep) {
-                    lista.add(aux + rep1 + "/source/Sources.xz");
-                }
+            for (String rep1 : rep) {
+                lista.add(aux + rep1 + "/binary-i386/Packages.gz");
             }
         }
         return lista;

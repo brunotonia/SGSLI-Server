@@ -18,6 +18,7 @@ package br.com.brunotonia.UTIL;
 
 import br.com.brunotonia.BO.PacotesBO;
 import br.com.brunotonia.BO.PacotesCategoriaBO;
+import br.com.brunotonia.BO.VersaoBO;
 import br.com.brunotonia.VO.Pacotes;
 import br.com.brunotonia.VO.PacotesCategoria;
 import java.io.BufferedReader;
@@ -90,7 +91,6 @@ public class PacotesUtil {
                         categoria = pacotesCategoriaBO.selecionar(valor);
                     }
                     pacote.setCategoria(categoria);
-                    categoria = null;
                     // Armazena pacote
                     if (pacote.getId() == null) {
                         // Pacote não existe: Adiciona
@@ -110,13 +110,55 @@ public class PacotesUtil {
         }
     }
 
+    private void lerCategorias(File arquivo_txt) {
+        FileInputStream stream;
+        InputStreamReader reader;
+        BufferedReader br;
+        try {
+            stream = new FileInputStream(arquivo_txt);
+            reader = new InputStreamReader(stream);
+            br = new BufferedReader(reader);
+            String linha = br.readLine();
+            PacotesCategoriaBO pcbo = new PacotesCategoriaBO();
+            List<String> listaCategorias = pcbo.listarCategorias();
+            for (String aux : listaCategorias) {
+                System.out.println(aux);
+            } 
+            String valor = "";
+            while (linha != null) {
+                if (linha.startsWith("Section: ")) {
+                    valor = linha.substring(9).replace(" ", "").toLowerCase();
+                    if (!listaCategorias.contains(valor)) {
+                        pcbo.adicionar(new PacotesCategoria(valor));
+                    }
+                }
+                linha = br.readLine();
+            }
+            System.out.println( );
+            System.out.println( );
+            for (String aux : listaCategorias) {
+                System.out.println(aux);
+            }
+            arquivo_txt.delete();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ArquivoUtil.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ArquivoUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void processarListaDePacotes() {
         List<String> lista_url = new RepositorioUtil().listarURLsPacotes();
-        new PacotesBO().prepararAtualizar();
+        if (!new PacotesBO().listar().isEmpty()) {
+            new PacotesBO().prepararAtualizar();
+        }
         for (String url : lista_url) {
             ArquivoUtil au = new ArquivoUtil();
-            lerPacotes(au.descompactarArquivoXZ(au.downloadArquivo(url)));
+            System.out.println(url);
+            lerPacotes(au.descompactarArquivoGZ(au.downloadArquivo(url)));
+            //lerCategorias(au.descompactarArquivoGZ(au.downloadArquivo(url)));
         }
+        new VersaoBO().atualizarDataListaPacotes();
     }
 
 }

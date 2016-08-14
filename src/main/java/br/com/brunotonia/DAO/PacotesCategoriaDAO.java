@@ -24,24 +24,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PacotesCategoriaDAO {
-
-    public void adicionar(PacotesCategoria p) throws Exception {
+    
+    public void adicionar(PacotesCategoria p){
         String sql = "INSERT INTO pacotes_categoria (\"categoria\") VALUES (?)";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
-        PreparedStatement ps = cnn.prepareStatement(sql);
-        ps.setString(1, p.getCategoria());
-        ps.execute();
-        ps.close();
-        cnn.commit();        
-        cnn.close();
+        try {
+            Connection cnn = PostgresqlConnect.getInstance().getConnection();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setString(1, p.getCategoria());
+            ps.execute();
+            ps.close();
+            cnn.commit();
+            cnn.close();
+        } catch (Exception e) {
+            //
+        }
     }
+    
+
+    public List<String> listarCategorias() {
+        String sql = "SELECT categoria FROM pacotes_categoria ORDER BY categoria";
+        List<String> lista = new ArrayList<String>();
+        try {
+            Connection cnn = PostgresqlConnect.getInstance().getConnection();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(rs.getString("categoria"));
+            }
+            rs.close();
+            ps.close();
+            cnn.commit();
+            cnn.close();
+        } catch (Exception e) {
+            //
+        } 
+        return lista;
+    }
+
+    
 
     public PacotesCategoria selecionar(Integer id) throws Exception {
         PacotesCategoria pctCategoria = null;
         String sql = "SELECT * FROM pacotes_categoria WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -50,6 +75,7 @@ public class PacotesCategoriaDAO {
         }
         rs.close();
         ps.close();
+        //cnn.commit();
         cnn.close();
         return pctCategoria;
     }
@@ -57,8 +83,7 @@ public class PacotesCategoriaDAO {
     public PacotesCategoria selecionar(String categoria) throws Exception {
         PacotesCategoria pctCategoria = null;
         String sql = "SELECT * FROM pacotes_categoria WHERE categoria = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, categoria.toLowerCase());
         ResultSet rs = ps.executeQuery();
@@ -67,14 +92,33 @@ public class PacotesCategoriaDAO {
         }
         rs.close();
         ps.close();
+        //cnn.commit();
         cnn.close();
         return pctCategoria;
     }
 
+    public Boolean exite(String categoria) throws Exception {
+        Boolean resultado = false;
+        String sql = "SELECT id FROM pacotes_categoria WHERE categoria = ?";
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
+        PreparedStatement ps = cnn.prepareStatement(sql);
+        ps.setString(1, categoria);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            resultado = true;
+        } else {
+            resultado = false;
+        }
+        rs.close();
+        ps.close();
+        //cnn.commit();
+        cnn.close();
+        return resultado;
+    }
+
     public List<PacotesCategoria> listar() throws Exception {
         String sql = "SELECT * FROM pacotes_categoria ORDER BY categoria";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<PacotesCategoria> lista = new ArrayList<PacotesCategoria>();
@@ -84,6 +128,7 @@ public class PacotesCategoriaDAO {
         }
         rs.close();
         ps.close();
+        //cnn.commit();
         cnn.close();
         return lista;
     }

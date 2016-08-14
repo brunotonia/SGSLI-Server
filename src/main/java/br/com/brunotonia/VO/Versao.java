@@ -16,8 +16,6 @@
  */
 package br.com.brunotonia.VO;
 
-import java.util.Calendar;
-
 public class Versao {
 
     private Integer id;
@@ -122,8 +120,6 @@ public class Versao {
     public void setDataListaPacotes(String dataListaPacotes) {
         this.dataListaPacotes = dataListaPacotes;
     }
-
-    
     
     @Override
     public String toString() {

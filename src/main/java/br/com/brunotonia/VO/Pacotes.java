@@ -16,7 +16,9 @@
  */
 package br.com.brunotonia.VO;
 
-public class Pacotes {
+import java.io.Serializable;
+
+public class Pacotes implements Serializable {
 
     private Integer id;
     private PacotesCategoria categoria;

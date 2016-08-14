@@ -18,22 +18,23 @@ package br.com.brunotonia.BO;
 
 import br.com.brunotonia.DAO.PacotesCategoriaDAO;
 import br.com.brunotonia.VO.PacotesCategoria;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PacotesCategoriaBO {
-    
+
     public PacotesCategoriaBO() {
-        
+
     }
-    
+
+    public List<String> listarCategorias() {
+        return new PacotesCategoriaDAO().listarCategorias();
+    }
+
     public void adicionar(PacotesCategoria pctCategoria) {
-        try {
-            new PacotesCategoriaDAO().adicionar(pctCategoria);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new PacotesCategoriaDAO().adicionar(pctCategoria);
     }
-    
+
     public PacotesCategoria selecionar(Integer id) {
         try {
             return new PacotesCategoriaDAO().selecionar(id);
@@ -42,7 +43,7 @@ public class PacotesCategoriaBO {
             return null;
         }
     }
-    
+
     public PacotesCategoria selecionar(String categoria) {
         try {
             return new PacotesCategoriaDAO().selecionar(categoria);
@@ -51,7 +52,7 @@ public class PacotesCategoriaBO {
             return null;
         }
     }
-    
+
     public List<PacotesCategoria> listar() {
         try {
             return new PacotesCategoriaDAO().listar();
@@ -60,5 +61,14 @@ public class PacotesCategoriaBO {
             return null;
         }
     }
-    
+
+    public Boolean existe(String categoria) {
+        try {
+            return new PacotesCategoriaDAO().exite(categoria);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

@@ -18,10 +18,11 @@ package br.com.brunotonia.BO;
 
 import br.com.brunotonia.DAO.InstalacaoDAO;
 import br.com.brunotonia.VO.Instalacao;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InstalacaoBO {
-    
+
     public void adicionar(Instalacao instalacao) {
         try {
             new InstalacaoDAO().adicionar(instalacao);
@@ -29,7 +30,7 @@ public class InstalacaoBO {
             e.printStackTrace();
         }
     }
-    
+
     public Instalacao selecionar(Integer id) {
         try {
             return new InstalacaoDAO().selecionar(id);
@@ -38,7 +39,7 @@ public class InstalacaoBO {
             return null;
         }
     }
-    
+
     public void ativarDesativar(Instalacao instalacao) {
         try {
             new InstalacaoDAO().ativarDesativar(instalacao);
@@ -46,16 +47,11 @@ public class InstalacaoBO {
             e.printStackTrace();
         }
     }
-    
+
     public List<Instalacao> listar() {
-        try {
-            return new InstalacaoDAO().listar();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return new InstalacaoDAO().listar();
     }
-    
+
     public List<Instalacao> listarAtivos(Integer id) {
         try {
             return new InstalacaoDAO().listarAtivos(id);
@@ -64,5 +60,5 @@ public class InstalacaoBO {
             return null;
         }
     }
-    
+
 }

@@ -29,8 +29,7 @@ public class PacotesDAO {
         String sql = "INSERT INTO pacotes "
                 + "(\"pacote\", \"versao\", \"dependencias\", \"descricao\", \"categoria\", \"ativo\")"
                 + " VALUES (?, ?, ?, ?, ?, ?)";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, p.getPacote());
         ps.setString(2, p.getVersao());
@@ -40,7 +39,7 @@ public class PacotesDAO {
         ps.setBoolean(6, true);
         ps.execute();
         ps.close();
-        cnn.commit();
+        //cnn.commit();
         cnn.close();
     }
     
@@ -48,8 +47,7 @@ public class PacotesDAO {
         String sql = "UPDATE pacotes SET" +
                 "versao = ?, dependencias = ?, descricao = ?, ativo = ? " +
                 "WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, pacote.getVersao());
         ps.setString(2, pacote.getDependencias());
@@ -57,6 +55,7 @@ public class PacotesDAO {
         ps.setBoolean(4, true);
         ps.setInt(5, pacote.getId());
         ResultSet rs = ps.executeQuery();
+        rs.close();
         ps.close();
         cnn.commit();
         cnn.close();
@@ -66,8 +65,7 @@ public class PacotesDAO {
     public Pacotes selecionar(Integer id) throws Exception {
         Pacotes pacote = null;
         String sql = "SELECT * FROM pacotes WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -91,8 +89,7 @@ public class PacotesDAO {
     
     public void prepararAtualizar() throws Exception {
         String sql = "UPDATE pacotes SET ativo = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setBoolean(1, false);
         ResultSet rs = ps.executeQuery();
@@ -104,8 +101,7 @@ public class PacotesDAO {
     public Pacotes selecionar(String nomePacote) throws Exception {
         Pacotes pacote = null;
         String sql = "SELECT * FROM pacotes WHERE pacote = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setString(1, nomePacote);
         ResultSet rs = ps.executeQuery();
@@ -126,9 +122,9 @@ public class PacotesDAO {
     }
     
     public List<Pacotes> listar() throws Exception {
-        String sql = "SELECT * FROM pacotes ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        //String sql = "SELECT * FROM pacotes ORDER BY id ";
+        String sql = "SELECT id, pacote FROM pacotes ORDER BY id ";
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<Pacotes> lista = new ArrayList<Pacotes>();
@@ -136,10 +132,10 @@ public class PacotesDAO {
             Pacotes pacote = new Pacotes();
             pacote.setId(rs.getInt("id"));
             pacote.setPacote(rs.getString("pacote"));
-            pacote.setVersao(rs.getString("versao"));
+            /*pacote.setVersao(rs.getString("versao"));
             pacote.setDependencias(rs.getString("dependencias"));
             pacote.setDescricao(rs.getString("descricao"));
-            pacote.setCategoria(new PacotesCategoriaDAO().selecionar(rs.getInt("categoria")));
+            pacote.setCategoria(new PacotesCategoriaDAO().selecionar(rs.getInt("categoria")));*/
             pacote.setAtivo(rs.getBoolean("ativo"));
             lista.add(pacote);
         }
@@ -150,9 +146,9 @@ public class PacotesDAO {
     }
     
     public List<Pacotes> listarAtivos() throws Exception {
-        String sql = "SELECT * FROM pacotes WHERE ativo = ? ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        //String sql = "SELECT * FROM pacotes WHERE ativo = ? ORDER BY id ";
+        String sql = "SELECT id, pacote FROM pacotes WHERE ativo = ? ORDER BY pacote";
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setBoolean(1, true);
         ResultSet rs = ps.executeQuery();
@@ -161,11 +157,11 @@ public class PacotesDAO {
             Pacotes pacote = new Pacotes();
             pacote.setId(rs.getInt("id"));
             pacote.setPacote(rs.getString("pacote"));
-            pacote.setVersao(rs.getString("versao"));
+            /*pacote.setVersao(rs.getString("versao"));
             pacote.setDependencias(rs.getString("dependencias"));
             pacote.setDescricao(rs.getString("descricao"));
             pacote.setCategoria(new PacotesCategoriaDAO().selecionar(rs.getInt("categoria")));
-            pacote.setAtivo(rs.getBoolean("ativo"));
+            pacote.setAtivo(rs.getBoolean("ativo"));*/
             lista.add(pacote);
         }
         rs.close();
@@ -175,9 +171,8 @@ public class PacotesDAO {
     }
     
     public List<Pacotes> listarInativos() throws Exception {
-        String sql = "SELECT * FROM pacotes WHERE ativo = ? ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        String sql = "SELECT * FROM pacotes WHERE ativo = ? ORDER BY pacote ";
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setBoolean(1, false);
         ResultSet rs = ps.executeQuery();
@@ -201,18 +196,14 @@ public class PacotesDAO {
     }
     
     public List<Pacotes> listarAtivosPorCategoria(Integer idCategoria) throws Exception {
-        String sql = "SELECT * FROM pacotes WHERE ativo = ? AND categoria = ? ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        String sql = "SELECT * FROM pacotes WHERE ativo = ? AND categoria = ? ORDER BY pacote ";
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
-        
         ps.setBoolean(1, true);
         ps.setInt(2, idCategoria);
-        
         ResultSet rs = ps.executeQuery();
         List<Pacotes> lista = new ArrayList<Pacotes>();
         while (rs.next()) {
-            
             Pacotes pacote = new Pacotes();
             pacote.setId(rs.getInt("id"));
             pacote.setPacote(rs.getString("pacote"));
@@ -229,6 +220,5 @@ public class PacotesDAO {
         cnn.close();
         return lista;
     }
-    
 
 }

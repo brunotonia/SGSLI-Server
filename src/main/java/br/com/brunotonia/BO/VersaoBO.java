@@ -58,4 +58,11 @@ public class VersaoBO {
         }
     }
     
+    public void atualizarDataListaPacotes() {
+        try {
+            new VersaoDAO().atualizarDataListaPacotes();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

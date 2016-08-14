@@ -25,8 +25,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 import org.apache.commons.io.FileUtils;
-import org.tukaani.xz.XZInputStream;
 
 public class ArquivoUtil {
 
@@ -43,7 +43,7 @@ public class ArquivoUtil {
         return arquivo_xz;
     }
 
-    public File descompactarArquivoXZ(File arquivo_xz) {
+    /*public File descompactarArquivoXZ(File arquivo_xz) {
         File arquivo_txt = new File("/tmp/acme/pacote.txt");
         try {
             FileInputStream fin = new FileInputStream(arquivo_xz);
@@ -63,6 +63,30 @@ public class ArquivoUtil {
             Logger.getLogger(ArquivoUtil.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }*/
+    
+    public File descompactarArquivoGZ(File arquivo_gz) {
+        File arquivo_txt = new File("/tmp/acme/pacote.txt");
+        try {
+            FileInputStream fin = new FileInputStream(arquivo_gz);
+            BufferedInputStream in = new BufferedInputStream(fin);
+            FileOutputStream out = new FileOutputStream(arquivo_txt);
+            GZIPInputStream gzIn = new GZIPInputStream(in);
+            final byte[] buffer = new byte[8192];
+            int n = 0;
+            while ((n = gzIn.read(buffer)) > 0) {
+        	out.write(buffer, 0, n);
+            }
+            out.close();
+            gzIn.close();
+            arquivo_gz.delete();
+            return arquivo_txt;
+        } catch (Exception ex) {
+            Logger.getLogger(ArquivoUtil.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
+    
+    
 
 }

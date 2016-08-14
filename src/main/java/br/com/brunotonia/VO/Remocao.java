@@ -16,7 +16,9 @@
  */
 package br.com.brunotonia.VO;
 
-public class Remocao {
+import java.io.Serializable;
+
+public class Remocao implements Serializable {
     
     private Integer id;
     private Pacotes pacote;

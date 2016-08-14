@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 bruno
+ * Copyright (C) 2016 Bruno Roberto Vasconcelos Tonia
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ public class InstalacaoBean implements Serializable {
         this.listaInstalacao = new InstalacaoBO().listar();
         this.idCategoria = 0;
         this.idVisualizacao = 0;
+        this.listaCategorias = new PacotesCategoriaBO().listar();
     }
 
     public Instalacao getInstalacao() {
@@ -116,15 +117,18 @@ public class InstalacaoBean implements Serializable {
     public void preparar(ActionEvent actionEvent) {
         this.instalacao = new Instalacao();
         this.listaInstalacao = new InstalacaoBO().listar();
+        this.pacote = new Pacotes();
+        this.idPacote = 0;
+        this.idCategoria = 0;
     }
     
     public void ativarDesativar(ActionEvent actionEvent) {
-        new InstalacaoBO().ativarDesativar(new InstalacaoBO().selecionar(instalacao.getId()));
+        new InstalacaoBO().ativarDesativar(instalacao);
         preparar(actionEvent);
     }
     
     public void prepararAdicionar(ActionEvent actionEvent) {
-        this.listaCategorias = new PacotesCategoriaBO().listar();
+        //this.listaCategorias = new PacotesCategoriaBO().listar();
         this.listaPacotes = new PacotesBO().listarAtivos();
     }
     
@@ -135,6 +139,10 @@ public class InstalacaoBean implements Serializable {
         } else {
             this.listaPacotes = new PacotesBO().listarAtivosPorCategoria(idCategoria);
         }   
+    }
+    
+    public void carregarPacotes(ValueChangeEvent valueChangeEvent) {
+        this.pacote = new PacotesBO().selecionar(idPacote);
     }
     
     public void adicionar(ActionEvent actionEvent) {

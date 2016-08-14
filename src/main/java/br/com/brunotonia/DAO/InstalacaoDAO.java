@@ -30,22 +30,20 @@ public class InstalacaoDAO {
                 + "(\"pacote\", \"ativo\")"
                 + " VALUES "
                 + "(?, ?)";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, p.getPacote().getId());
         ps.setBoolean(2, p.getAtivo());
         ps.execute();
         ps.close();
-        cnn.commit();
+        //cnn.commit();
         cnn.close();
     }
 
     public Instalacao selecionar(Integer id) throws Exception {
         Instalacao instalacao = null;
         String sql = "SELECT * FROM instalacao WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -62,27 +60,25 @@ public class InstalacaoDAO {
     }
 
     public void ativarDesativar(Instalacao i) throws Exception {
-        String sql = "UPDATE instalacao SET "
-                + " ativo = ? "
-                + " WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        String sql = "UPDATE instalacao SET ativo = ? WHERE id = ?";
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setBoolean(1, !i.getAtivo());
-        ps.setInt(2, i.getPacote().getId());
+        System.out.println(i.getAtivo());
+        ps.setInt(2, i.getId());
         ps.execute();
         ps.close();
-        cnn.commit();
+        //cnn.commit();
         cnn.close();
     } 
 
-    public List<Instalacao> listar() throws Exception {
+    public List<Instalacao> listar() {
         String sql = "SELECT * FROM instalacao ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        List<Instalacao> lista = new ArrayList<Instalacao>();
+        try {
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
-        List<Instalacao> lista = new ArrayList<Instalacao>();
         while (rs.next()) {
             Instalacao instalacao = new Instalacao();
             instalacao.setId(rs.getInt("id"));
@@ -93,13 +89,15 @@ public class InstalacaoDAO {
         rs.close();
         ps.close();
         cnn.close();
+        } catch (Exception e) {
+            
+        }
         return lista;
     }
 
     public List<Instalacao> listarAtivos(Integer id) throws Exception {
         String sql = "SELECT * FROM instalacao WHERE id > ? AND ativo = ? ORDER BY id";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ps.setBoolean(2, true);

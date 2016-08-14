@@ -30,13 +30,10 @@ public class RemocaoDAO {
                 + "(\"pacote\", \"ativo\")"
                 + " VALUES "
                 + "(?, ?)";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
         ps.setInt(1, r.getPacote().getId());
-        ps.setBoolean(2, r.getAtivo());
-
+        ps.setBoolean(2, true);
         ps.execute();
         ps.close();
         cnn.close();
@@ -45,18 +42,15 @@ public class RemocaoDAO {
     public Remocao selecionar(Integer id) throws Exception {
         Remocao remocao = null;
         String sql = "SELECT * FROM remocao WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-
             remocao = new Remocao();
             remocao.setId(rs.getInt("id"));
             remocao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
             remocao.setAtivo(rs.getBoolean("ativo"));
-
         }
         rs.close();
         ps.close();
@@ -65,16 +59,11 @@ public class RemocaoDAO {
     }
     
     public void ativarDesativar (Remocao r) throws Exception {
-        String sql = "UPDATE remocao SET "
-                + " ativo = ?,"
-                + " WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        String sql = "UPDATE remocao SET  ativo = ?, WHERE id = ?";
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
-
         ps.setBoolean(1, !r.getAtivo());
-        ps.setInt(2, r.getPacote().getId());
-
+        ps.setInt(2, r.getId());
         ps.execute();
         ps.close();
         cnn.close();
@@ -83,8 +72,7 @@ public class RemocaoDAO {
     
     public List<Remocao> listar() throws Exception {
         String sql = "SELECT * FROM remocao ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<Remocao> lista = new ArrayList<Remocao>();
@@ -102,8 +90,7 @@ public class RemocaoDAO {
     
     public List<Remocao> listar(Integer id) throws Exception {
         String sql = "SELECT * FROM remocao WHERE id > ? AND ativo = ? ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ps.setBoolean(2, true);

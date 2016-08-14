@@ -30,8 +30,7 @@ public class RepositorioSecurityDAO {
                 + "(\"tipo\", \"url\", \"versao\", \"repositorios\", \"descricao\", \"ativo\")"
                 + " VALUES "
                 + "(?, ?, ?, ?, ?, ?)";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, repositorio.getTipo().getId());
         ps.setString(2, repositorio.getUrl());
@@ -55,8 +54,7 @@ public class RepositorioSecurityDAO {
                 + " descricao = ?,"
                 + " ativo = ?"
                 + " WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, repositorio.getTipo().getId());
         ps.setString(2, repositorio.getUrl());
@@ -72,8 +70,7 @@ public class RepositorioSecurityDAO {
     
     public void excluir(Integer id) throws Exception {
         String sql = "DELETE FROM repositorio_security WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         
         ps.setInt(1, id);
@@ -86,8 +83,7 @@ public class RepositorioSecurityDAO {
     public RepositorioSecurity selecionar(Integer id) throws Exception {
         RepositorioSecurity repositorio = null;
         String sql = "SELECT * FROM repositorio_security WHERE id = ?";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -110,8 +106,7 @@ public class RepositorioSecurityDAO {
     
     public List<RepositorioSecurity> listar() throws Exception {
         String sql = "SELECT * FROM repositorio_security ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<RepositorioSecurity> lista = new ArrayList<RepositorioSecurity>();
@@ -136,8 +131,7 @@ public class RepositorioSecurityDAO {
     
     public List<RepositorioSecurity> listarAtivos() throws Exception {
         String sql = "SELECT * FROM repositorio_security WHERE ativo = ? ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setBoolean(1, true);
         ResultSet rs = ps.executeQuery();
@@ -162,8 +156,7 @@ public class RepositorioSecurityDAO {
     
     public List<RepositorioSecurity> listarInativos() throws Exception {
         String sql = "SELECT * FROM repositorio_security WHERE ativo = ? ORDER BY id ";
-        Conexoes cnx = new Conexoes();
-        Connection cnn = cnx.getConexao();
+        Connection cnn = PostgresqlConnect.getInstance().getConnection();
         PreparedStatement ps = cnn.prepareStatement(sql);
         ps.setBoolean(1, false);
         ResultSet rs = ps.executeQuery();
