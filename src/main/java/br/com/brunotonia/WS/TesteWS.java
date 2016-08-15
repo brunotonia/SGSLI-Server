@@ -16,17 +16,17 @@
  */
 package br.com.brunotonia.WS;
 
-import br.com.brunotonia.BO.VersaoBO;
-import br.com.brunotonia.VO.Versao;
-import javax.ws.rs.GET;
+//import br.com.brunotonia.BO.VersaoBO;
+//import br.com.brunotonia.VO.Versao;
+//import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+//import javax.ws.rs.Produces;
+//import javax.ws.rs.core.MediaType;
 
 @Path("/testes")
 public class TesteWS {
     
-    @GET
+    /*@GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=utf-8")
     public String testes() {
         System.err.print("Testes/\n"
@@ -37,7 +37,7 @@ public class TesteWS {
                 + "\t- sf - testa o sessionFactory\n"
                 + "\t- session - testa a session\n"
                 + "\n";
-    }
+    }*/
     
     /*@Path("/versao")
     @GET

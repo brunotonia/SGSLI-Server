@@ -18,8 +18,10 @@ package br.com.brunotonia.BEAN;
 
 import br.com.brunotonia.BO.RepositorioBO;
 import br.com.brunotonia.BO.RepositorioTipoBO;
+import br.com.brunotonia.BO.VersaoBO;
 import br.com.brunotonia.VO.Repositorio;
 import br.com.brunotonia.VO.RepositorioTipo;
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -27,7 +29,7 @@ import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "repositorioBean")
 @ViewScoped
-public class RepositorioBean {
+public class RepositorioBean implements Serializable {
 
     private Repositorio repositorio = new Repositorio();
     private List<Repositorio> listaRepositorios = new RepositorioBO().listar();
@@ -92,17 +94,20 @@ public class RepositorioBean {
     public void adicionar(ActionEvent actionEvent) {
         repositorio.setTipo(new RepositorioTipoBO().selecionar(idTipo));
         new RepositorioBO().adicionar(repositorio);
+        new VersaoBO().incrementarUpdate();
         prepararAdicionar(actionEvent);
     }
     
     public void editar(ActionEvent actionEvent) {
         repositorio.setTipo(new RepositorioTipoBO().selecionar(idTipo));
         new RepositorioBO().alterar(repositorio);
+        new VersaoBO().incrementarUpdate();
         prepararAdicionar(actionEvent);
     }
     
     public void excluir(ActionEvent actionEvent) {
         new RepositorioBO().excluir(repositorio.getId());
+        new VersaoBO().incrementarUpdate();
         prepararAdicionar(actionEvent);
     }
     

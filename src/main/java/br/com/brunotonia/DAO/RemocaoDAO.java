@@ -38,73 +38,90 @@ public class RemocaoDAO {
         ps.close();
         cnn.close();
     }
-    
+
     public Remocao selecionar(Integer id) throws Exception {
-        Remocao remocao = null;
         String sql = "SELECT * FROM remocao WHERE id = ?";
-        Connection cnn = PostgresqlConnect.getInstance().getConnection();
-        PreparedStatement ps = cnn.prepareStatement(sql);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            remocao = new Remocao();
-            remocao.setId(rs.getInt("id"));
-            remocao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
-            remocao.setAtivo(rs.getBoolean("ativo"));
+        Remocao remocao = null;
+        try {
+            Connection cnn = PostgresqlConnect.getInstance().getConnection();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                remocao = new Remocao();
+                remocao.setId(rs.getInt("id"));
+                remocao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
+                remocao.setAtivo(rs.getBoolean("ativo"));
+            }
+            rs.close();
+            ps.close();
+            cnn.close();
+        } catch (Exception e) {
+
         }
-        rs.close();
-        ps.close();
-        cnn.close();
         return remocao;
     }
-    
-    public void ativarDesativar (Remocao r) throws Exception {
-        String sql = "UPDATE remocao SET  ativo = ?, WHERE id = ?";
-        Connection cnn = PostgresqlConnect.getInstance().getConnection();
-        PreparedStatement ps = cnn.prepareStatement(sql);
-        ps.setBoolean(1, !r.getAtivo());
-        ps.setInt(2, r.getId());
-        ps.execute();
-        ps.close();
-        cnn.close();
-    }
-    
-    
-    public List<Remocao> listar() throws Exception {
-        String sql = "SELECT * FROM remocao ORDER BY id ";
-        Connection cnn = PostgresqlConnect.getInstance().getConnection();
-        PreparedStatement ps = cnn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        List<Remocao> lista = new ArrayList<Remocao>();
-        while (rs.next()) {
-            Remocao remocao = new Remocao();
-            remocao.setId(rs.getInt("id"));
-            remocao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
-            lista.add(remocao);
+
+    public void ativarDesativar(Remocao r) {
+        try {
+            String sql = "UPDATE remocao SET  ativo = ?, WHERE id = ?";
+            Connection cnn = PostgresqlConnect.getInstance().getConnection();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setBoolean(1, !r.getAtivo());
+            ps.setInt(2, r.getId());
+            ps.execute();
+            ps.close();
+            cnn.close();
+        } catch (Exception e) {
+
         }
-        rs.close();
-        ps.close();
-        cnn.close();
+    }
+
+    public List<Remocao> listar() {
+        String sql = "SELECT * FROM remocao ORDER BY id ";
+        List<Remocao> lista = new ArrayList<Remocao>();
+        try {
+            Connection cnn = PostgresqlConnect.getInstance().getConnection();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Remocao remocao = new Remocao();
+                remocao.setId(rs.getInt("id"));
+                remocao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
+                remocao.setAtivo(rs.getBoolean("ativo"));
+                lista.add(remocao);
+            }
+            rs.close();
+            ps.close();
+            cnn.close();
+        } catch (Exception e) {
+
+        }
         return lista;
     }
-    
-    public List<Remocao> listar(Integer id) throws Exception {
+
+    public List<Remocao> listar(Integer id) {
         String sql = "SELECT * FROM remocao WHERE id > ? AND ativo = ? ORDER BY id ";
-        Connection cnn = PostgresqlConnect.getInstance().getConnection();
-        PreparedStatement ps = cnn.prepareStatement(sql);
-        ps.setInt(1, id);
-        ps.setBoolean(2, true);
-        ResultSet rs = ps.executeQuery();
         List<Remocao> lista = new ArrayList<Remocao>();
-        while (rs.next()) {
-            Remocao remocao = new Remocao();
-            remocao.setId(rs.getInt("id"));
-            remocao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
-            lista.add(remocao);
+        try {
+            Connection cnn = PostgresqlConnect.getInstance().getConnection();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setBoolean(2, true);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Remocao remocao = new Remocao();
+                remocao.setId(rs.getInt("id"));
+                remocao.setPacote(new PacotesDAO().selecionar(rs.getInt("pacote")));
+                remocao.setAtivo(rs.getBoolean("ativo"));
+                lista.add(remocao);
+            }
+            rs.close();
+            ps.close();
+            cnn.close();
+        } catch (Exception e) {
+
         }
-        rs.close();
-        ps.close();
-        cnn.close();
         return lista;
     }
 

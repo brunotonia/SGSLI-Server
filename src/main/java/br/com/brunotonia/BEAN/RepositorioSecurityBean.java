@@ -18,8 +18,10 @@ package br.com.brunotonia.BEAN;
 
 import br.com.brunotonia.BO.RepositorioSecurityBO;
 import br.com.brunotonia.BO.RepositorioTipoBO;
+import br.com.brunotonia.BO.VersaoBO;
 import br.com.brunotonia.VO.RepositorioSecurity;
 import br.com.brunotonia.VO.RepositorioTipo;
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -27,7 +29,7 @@ import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "repositorioSecurityBean")
 @ViewScoped
-public class RepositorioSecurityBean {
+public class RepositorioSecurityBean implements Serializable {
 
     private RepositorioSecurity repositorio = new RepositorioSecurity();
     private List<RepositorioSecurity> listaRepositorios = new RepositorioSecurityBO().listar();
@@ -50,7 +52,7 @@ public class RepositorioSecurityBean {
         this.repositorio = repositorio;
     }
 
-    public List<RepositorioSecurity>  getListaRepositorios() {
+    public List<RepositorioSecurity> getListaRepositorios() {
         return listaRepositorios;
     }
 
@@ -81,7 +83,7 @@ public class RepositorioSecurityBean {
     public void setIdTipo(Integer idTipo) {
         this.idTipo = idTipo;
     }
-    
+
     public void prepararAdicionar(ActionEvent actionEvent) {
         repositorio = new RepositorioSecurity();
         tipo = new RepositorioTipo();
@@ -92,18 +94,21 @@ public class RepositorioSecurityBean {
     public void adicionar(ActionEvent actionEvent) {
         repositorio.setTipo(new RepositorioTipoBO().selecionar(idTipo));
         new RepositorioSecurityBO().adicionar(repositorio);
+        new VersaoBO().incrementarUpdate();
         prepararAdicionar(actionEvent);
     }
-    
+
     public void editar(ActionEvent actionEvent) {
         repositorio.setTipo(new RepositorioTipoBO().selecionar(idTipo));
         new RepositorioSecurityBO().alterar(repositorio);
+        new VersaoBO().incrementarUpdate();
         prepararAdicionar(actionEvent);
     }
-    
+
     public void excluir(ActionEvent actionEvent) {
         new RepositorioSecurityBO().excluir(repositorio.getId());
+        new VersaoBO().incrementarUpdate();
         prepararAdicionar(actionEvent);
     }
-    
+
 }

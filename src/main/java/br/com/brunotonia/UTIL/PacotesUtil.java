@@ -159,6 +159,7 @@ public class PacotesUtil {
             //lerCategorias(au.descompactarArquivoGZ(au.downloadArquivo(url)));
         }
         new VersaoBO().atualizarDataListaPacotes();
+        new VersaoBO().incrementarUpdate();
     }
 
 }
